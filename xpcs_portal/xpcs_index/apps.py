@@ -16,17 +16,15 @@ RESOURCE_SERVER = 'petrel_https_server'
 
 SEARCH_INDEXES = {
     'xpcs': {
-        'uuid': '6871e83e-866b-41bc-8430-e3cf83b43bdc',
-        'name': 'APS XPCS',
+        'uuid': '344688c6-cff6-49c7-9bc5-e2fa3c5fedd2',
+        'name': 'Petrel Users: XPCS ',
         # 'tagline': 'APS Beamline Data',
         'group': '',
         'tabbed_project': True,
         'access': 'private',
         'template_override_dir': 'xpcs',
         'description': (
-            'X-ray Photon Correlation Spectroscopy (XPCS) is a technique to '
-            'study dynamics in materials at nanoscale by identifying '
-            'correlations in time series of area detector images'
+            'Select this project to participate in Petrel User Study for XPCS team members (IRB No. XXX)'
         ),
         'fields': [
             ('title', fields.title),
@@ -87,6 +85,5 @@ SEARCH_INDEXES = {
                 "field_name": "project_metadata.reprocessing.suffix",
             },
         ],
-        # 'result_format_version': '2019-08-27',
     }
 }

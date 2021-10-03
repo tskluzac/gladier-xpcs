@@ -6,10 +6,7 @@ LISTING_PREVIEW = 'scattering_pattern_log.png'
 
 
 def search_results(result):
-    # tsv_stats = [
-    #     {'field': 'numrows', 'name': 'Row Count', 'type': 'int'},
-    #     {'field': 'numcols', 'name': 'Column Count', 'type': 'int'},
-    # ]
+
     dc_fields = [
         {'field': 'publicationYear', 'name': 'Publication Year'},
     ]
@@ -18,12 +15,6 @@ def search_results(result):
          'name': 'Parent Folder'},
         {'field': 'aps_cycle_v2', 'name': 'APS Cycle'},
     ]
-    # project_metadata_fields = [{
-    #     'field': k,
-    #     'name': ' '.join([n.capitalize() for n in k.split('_')])}
-    #     for k in result[0]['project_metadata'].keys()
-    #     if k not in ['project-slug', 'preview']
-    # ]
     rfm_size = [
         {'field': 'length', 'name': 'Size', 'type': 'filesize'}
     ]
@@ -307,8 +298,6 @@ def field_metadata(result):
     label_headers = [
         {'field': 'name', 'name': labels.get('name'), 'type': 'str'},
         {'field': 'reference', 'name': 'Reference', 'type': 'url'},
-        # {'field': 'description', 'name': metadata['labels']['description']},
-        # {'field': 'format', 'name': metadata['labels']['format']},
         {'field': 'type', 'name': labels.get('type'), 'type': 'str'},
         {'field': 'count', 'name': 'Count', 'type': 'int'},
         {'field': 'frequency', 'name': 'Frequency', 'type': 'int'},
