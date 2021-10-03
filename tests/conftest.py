@@ -1,8 +1,19 @@
 import pytest
 import pathlib
 from unittest.mock import Mock
-from gladier_xpcs.client_reprocess import XPCSReprocessingClient
+import gladier
+from gladier_xpcs.flow_reprocess import XPCSReprocessingFlow
 from gladier_xpcs.deployments import BaseDeployment
+from gladier_xpcs.tools import xpcs_metadata
+
+
+
+@pytest.fixture(autouse=True)
+def mock_gladier_client(monkeypatch):
+    monkeypatch.setattr(gladier.GladierBaseClient, 'is_logged_in', Mock(return_value=True))
+    monkeypatch.setattr(gladier.GladierBaseClient, 'get_input',
+                        Mock(return_value={'input': {}}))
+    return gladier.GladierBaseClient
 
 
 @pytest.fixture
@@ -10,9 +21,21 @@ def mock_pathlib(monkeypatch):
     # Mock any pathlib methods that would actually change files
     monkeypatch.setattr(pathlib.Path, 'unlink', Mock())
     monkeypatch.setattr(pathlib.Path, 'exists', Mock(return_value=True))
-    # Rename should return the new name of the file its renaming
-    monkeypatch.setattr(pathlib.Path, 'rename', lambda self, pth: pth)
+
+    def rename(self, path):
+        """Rename should return the new name of the file its renaming"""
+        return path if isinstance(path, pathlib.Path) else pathlib.Path(path)
+    monkeypatch.setattr(pathlib.Path, 'rename', rename)
     return pathlib.Path
+
+
+@pytest.fixture
+def mock_gather(monkeypatch):
+    monkeypatch.setattr(xpcs_metadata, 'gather', Mock())
+    xpcs_metadata.gather.return_value = {
+        'measurement.instrument.acquisition.root_folder': '/data/2020-1/sanat202002/',
+    }
+    return xpcs_metadata.gather
 
 
 @pytest.fixture
@@ -20,7 +43,7 @@ def reprocessing_deployment():
     class MockDeployment(BaseDeployment):
         globus_endpoints = {
             'globus_endpoint_source': 'pertel_or_eagle_endpoint_uuid',
-            'globus_endpoint_compute': 'theta_endpoint_uuid',
+            'globus_endpoint_proc': 'theta_endpoint_uuid',
         }
         funcx_endpoints = {
             'funcx_endpoint_non_compute': '553e7b64-0480-473c-beef-be762ba979a9',
@@ -28,7 +51,7 @@ def reprocessing_deployment():
         }
         flow_input = {
             'input': {
-                'proc_dir': '/projects/APSDataAnalysis/xpcs/mock_processing_dir',
+                'staging_dir': '/projects/APSDataAnalysis/xpcs/mock_staging_dir',
                 'funcx_endpoint_non_compute': 'funcx_endpoint_non_compute_mock',
                 'funcx_endpoint_compute': 'funcx_endpoint_compute_mock',
             }
@@ -56,7 +79,7 @@ def reprocessing_input():
 
 @pytest.fixture
 def reprocessing_runtime_input(reprocessing_deployment, reprocessing_input):
-    cli = XPCSReprocessingClient()
+    cli = XPCSReprocessingFlow()
     xpcs_input = cli.get_xpcs_input(
         reprocessing_deployment,
         reprocessing_input['hdf_source'],
