@@ -1,0 +1,3 @@
+SECRET_KEY='openssl rand -hex 32'
+SOCIAL_AUTH_GLOBUS_KEY='69dab65f-f790-42ef-b8c9-cc56844f0fa2'
+SOCIAL_AUTH_GLOBUS_SECRET='YnbtuwCxEXsw/okggz/vTc4Bc9D37pqug+DemZKdjJ4='
