@@ -3,7 +3,7 @@ from urllib.parse import urlsplit, urlencode, urlunsplit
 from alcf_data_portal.templatetags.xpcs_filters import format_aps_cycle_v2
 
 LISTING_PREVIEW = 'scattering_pattern_log.png'
-
+import logging
 
 def search_results(result):
 
@@ -29,6 +29,7 @@ def search_results(result):
 def cherry_picked_detail(result):
     aps_cycle = get_fields([{'field': 'aps_cycle_v2', 'name': 'APS Cycle'}],
                            result[0]['project_metadata'])
+    print("THING: hi")
     if aps_cycle:
         aps_cycle[0]['value'] = format_aps_cycle_v2(aps_cycle[0]['value'])
     all_groups = detail_field_groups(result)
