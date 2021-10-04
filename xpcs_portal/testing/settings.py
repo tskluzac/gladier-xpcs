@@ -23,9 +23,8 @@ except ImportError:
     extra_scopes = []
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-# BASE_DIR = Path(__file__).resolve().parent.parent
-BASE_DIR = "/src/django-alcf-data-portal/"  # TODO: TYLER ADDED.
-DB_PATH = "/src/xpcs_portal/db.sqlite3"
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -68,6 +67,7 @@ MIDDLEWARE = [
     'globus_portal_framework.middleware.ExpiredTokenMiddleware',
 ]
 
+LOGIN_URL = '/login/globus'
 AUTHENTICATION_BACKENDS = [
     'globus_portal_framework.auth.GlobusOpenIdConnect',
     'django.contrib.auth.backends.ModelBackend',
@@ -75,15 +75,13 @@ AUTHENTICATION_BACKENDS = [
 
 ROOT_URLCONF = 'xpcs_portal.testing.urls'
 
+# This copies the ALCFDataPortal, which by default still uses the old templates
+BASE_TEMPLATES = ''
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-                BASE_DIR + 'alcf_data_portal/templates',
-                # '/src' # Tyler added
-                # '/src/xpcs_portal/xpcs_index /xpcs/templates' # Tyler added
-                # '/src/xpcs_portal/xpcs_index/templates'  Tyler's attempt #1
-                # '/src/xpcs_portal/xpcs_index/templates/' Tyler's attempt #2
+            BASE_DIR / 'testing' / 'templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -101,7 +99,6 @@ TEMPLATES = [
     },
 ]
 
-TABBED_PROJECT_INDEXES = ['xpcs']
 
 SOCIAL_AUTH_GLOBUS_SCOPE = [
     'urn:globus:auth:scope:search.api.globus.org:all',
@@ -114,6 +111,11 @@ SOCIAL_AUTH_GLOBUS_SCOPE = [
     # Note: Automate scopes are only added if the globus-automate-client is installed
 ] + extra_scopes
 
+ALLOWED_FRONTEND_TOKENS = [
+    'petrel_https_server',
+    'c7683485-3c3f-454a-94c0-74310c80b32a',
+]
+
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -121,8 +123,26 @@ SOCIAL_AUTH_GLOBUS_SCOPE = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME':  DB_PATH # f"{BASE_DIR}db.sqlite3", # TODO: TYLER EDITED.
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'stream': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {'handlers': ['stream'], 'level': 'INFO'},
+        'django.db.backends': {'handlers': ['stream'], 'level': 'WARNING'},
+        'globus_portal_framework': {'handlers': ['stream'], 'level': 'DEBUG'},
+        'xpcs_portal': {'handlers': ['stream'], 'level': 'DEBUG', 'propagate': True},
+        'automate_app': {'handlers': ['stream'], 'level': 'DEBUG', 'propagate': True},
+    },
 }
 
 # Internationalization
