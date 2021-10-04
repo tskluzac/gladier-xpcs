@@ -1,0 +1,2 @@
+-e git+https://github.com/globus/django-globus-portal-framework.git@v0.3.21#egg=django-globus-portal-framework
+isodate

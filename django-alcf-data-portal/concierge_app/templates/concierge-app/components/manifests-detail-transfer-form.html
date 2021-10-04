@@ -1,0 +1,43 @@
+<form action="{% url 'concierge-app:manifest-transfer-detail' globus_portal_framework.index concierge_manifest.id %}" method="POST">
+  <p>Transfer the complete files referenced in this manifest to a remote location.</p>
+  <hr>
+  {% if not transfer_endpoint_id %}
+  <a href="{{choose_manifest_url}}{{concierge_manifest.id}}" class="btn btn-primary mb-2">Choose Location</a>
+  {% else %}
+  <div class="form-group mb-2">
+    <div class="row form-group">
+        <label for="endpoint" class="col-sm-2 col-form-label">Endpoint</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control my-1" id="endpoint" name="endpoint" placeholder="Globus Endpoint UUID" value="{{transfer_endpoint_id}}" hidden>
+          <input type="text" class="form-control my-1" placeholder="Globus Endpoint UUID" value="{{transfer_endpoint_name}}" readonly>
+        </div>
+        <div class="col-sm-4">
+          <a href="{{choose_manifest_url}}{{concierge_manifest.id}}" class="btn btn-primary mb-2">Choose Different Location</a>
+        </div>
+    </div>
+
+    <div class="row form-group">
+      <label for="path" class="col-sm-2 col-form-label">Path</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control my-1" id="path" name="path" placeholder="/path/" value="{{transfer_path}}" readonly>
+      </div>
+      <div class="col-sm-4"></div>
+    </div>
+
+    <div class="row form-group">
+      <label for="label" class="col-sm-2 col-form-label">Transfer Label</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control my-1" id="label" name="label" value="{{transfer_label}}" readonly>
+      </div>
+      <div class="col-sm-4"></div>
+    </div>
+
+    {% csrf_token %}
+  </div>
+  <hr>
+  {% endif %}
+  <button id="transfer-submit-block-{{concierge_manifest.id}}" type="submit" class="btn mb-2 btn-primary" aria-describedby="transfer-submit-help-block-{{concierge_manifest.id}}" {% if not transfer_endpoint_name %}disabled{%endif%}>Transfer Files</button>
+  <small id="transfer-submit-help-block-{{concierge_manifest.id}}" class="form-text text-muted">
+    Review the destination endpoint and path, then click "Transfer" to start copying the files in the manifest.
+  </small>
+</form>

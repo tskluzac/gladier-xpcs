@@ -1,0 +1,65 @@
+{%extends "global/tabbed-project/../../../../alcf_data_portal/templates/global/tabbed-project/base.html" %}
+{% load static index_template %}
+
+{%block headextras%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}" />
+<script>
+function selectAllCheckboxes(classID, source) {
+  checkboxes = document.getElementsByClassName(classID);
+  for (var i = 0; i < checkboxes.length; i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+</script>
+{% endblock %}
+
+
+{% block body %}
+
+{% block maifest_checkout_back_to_search %}
+{% if request.session.search %}
+<div class="container mt-3">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-info" role="alert">
+        {% if project %}
+        <a href="{% url 'tp-project-search' request.session.search.index project %}?{{request.session.search.full_query}}">Back to Search</a>
+        {% else %}
+        <a href="{% url 'tp-search' request.session.search.index %}?{{request.session.search.full_query}}">Back to Search</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+<div class="row">
+  <div class="col">
+    <h2 class="text-center">{{project_title}}</h2>
+  </div>
+</div>
+
+<div class="row mb-5">
+  <div class="col"></div>
+  <div class="col-10">
+    <div>
+      <h1 class="text-center">{%block checkout_title%}Create Manifest{%endblock%}</h1>
+      <div class="card">
+        <div class="card-body">
+          {% block manifest_create_form %}
+            {% index_template 'concierge-app/components/checkout-form.html' as checkout_form %}
+            {% include checkout_form %}
+          {% endblock %}
+
+          {% if form.is_bound and form.errors %}
+          <div class="alert alert-danger my-3" role="alert">{{form.errors}}</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col"></div>
+</div>
+
+{% endblock %}

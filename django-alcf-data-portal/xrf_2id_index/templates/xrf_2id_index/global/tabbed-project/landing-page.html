@@ -1,0 +1,20 @@
+{%extends "global/tabbed-project/../../../../../alcf_data_portal/templates/global/tabbed-project/landing-page.html" %}
+
+{% block landing_page_about %}
+  <p class="lead font-weight-bolder">
+    X-ray Fluorescence (XRF) imaging for datasets. We'll add a better description soon!
+  </p>
+{% endblock %}
+
+{% block landing_page_data_access %}
+  <p class="lead font-weight-bolder">Search results are limited to members of the 2ID XRF Admins.</p>
+  {% if '54b4398b-22a6-11eb-8747-0e2677f068e5' in user_groups %}
+  <a class="btn btn-success" target="_blank" href="https://app.globus.org/groups/54b4398b-22a6-11eb-8747-0e2677f068e5/about">
+    You are a member of the 2ID XRF Admins
+  </a>
+  {% else %}
+  <a class="btn btn-primary" target="_blank" href="https://app.globus.org/groups/54b4398b-22a6-11eb-8747-0e2677f068e5/about">
+    Request Access to 2ID XRF Admins
+  </a>
+  {% endif %}
+{% endblock %}

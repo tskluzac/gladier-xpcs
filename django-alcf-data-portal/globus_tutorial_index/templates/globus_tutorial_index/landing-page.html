@@ -1,0 +1,78 @@
+{%extends "base.html" %}
+{% load static is_active %}
+
+{%block headextras%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}" />
+{% endblock %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a class="h5" href="{% url 'index-selection' %}">{{globus_portal_framework.project_title}}</a></li>
+<li class="breadcrumb-item active"><a class="h5">{{globus_portal_framework.index_data.name}}</a></li>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="row">
+  <div class="col">
+    <h2 class="text-center mt-3 mb-5">{{project_title}}</h2>
+  </div>
+</div>
+
+
+<div class="row mb-5">
+  <div class="col"></div>
+  <div class="col-10">
+
+    <div>
+      <h1>About</h1>
+      {% block landing_page_about %}
+      <p class="lead font-weight-bolder">
+        Welcome to the Globus Tutorial page. This project works in conjunction with the
+        <a href="https://github.com/globus/globus-jupyter-notebooks/blob/master/Metadata_Search_and_Discovery.ipynb" target="_blank">Notebook Tutorials</a>
+        for users to create an index then view the results through a portal. When you create an index,
+        the result will show up here.
+
+        You can run the tutorial interactively without installing anything by navigating to the
+        <a href="https://jupyter.demo.globus.org/" target="_blank">Jupyter Demo Server</a>.
+      </p>
+      <p class="lead font-weight-bolder">
+        When you boot up your notebook server, choose the following tutorial:
+      </p>
+      <ul>
+        <li>
+          <p class="lead font-weight-bolder">Metadata_Search_and_Discovery.ipynb</p>
+        </li>
+      </ul>
+      {% endblock %}
+    </div>
+    <div>
+      <h1>Search Indices</h1>
+      {% block landing_page_data_access %}
+      <p class="lead font-weight-bolder">
+      Choose your index below.
+      </p>
+      {% if indices %}
+      <ul>
+        {% for index in indices %}
+          <li><a href="{% url 'globus-tutorial:search' globus_portal_framework.index index.id %}">{{index.display_name}}</a> -- {{index.description}}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <div class="alert alert-info" role="alert">
+        <p>You have no indices to show. See the tutorials above for getting started</p>
+      </div>
+      {% endif %}
+
+      {% endblock %}
+    </div>
+    <div class="alert alert-info" role="alert">
+      Note: Results must be formatted according to the tutorial. There are limitless ways to structure data in
+      Globus Search, only the tutorial data is guaranteed to show up properly.
+    </div>
+  </div>
+  <div class="col"></div>
+</div>
+
+
+{% endblock %}

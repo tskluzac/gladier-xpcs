@@ -1,0 +1,32 @@
+{%extends "global/tabbed-project/../../../../../alcf_data_portal/templates/global/tabbed-project/landing-page.html" %}
+
+{% block landing_page_about %}
+  <p class="lead font-weight-bolder">
+    1-ID provides brilliant, high-energy x-ray beams for a variety of scientific applications.
+  </p>
+{% endblock %}
+
+{% block landing_page_data_access %}
+  <p class="lead font-weight-bolder">Access is controlled by the following group</p>
+  <a class="btn btn-primary" target="_blank" href="https://app.globus.org/groups/{{globus_portal_framework.index_data.group}}/about">
+    {{globus_portal_framework.index_data.name}} Group
+  </a>
+
+  <div>
+    <p class="lead font-weight-bolder">Your group status in this project:</p>
+    {% if user.is_anonymous %}
+    <span class="btn btn-warning disabled">Not logged in</span>
+        <span class="btn btn-warning disabled">You need to request access.</span>
+    <p class="alert alert-info">Resources in this project many not be visible to you until you
+    join the group above.</p>
+    {% elif globus_portal_framework.index_data.group in user_groups %}
+    <span class="btn btn-success disabled">You are a member of this group.</span>
+    {% else %}
+    {% endif %}
+  </div>
+
+  <p class="lead font-weight-bolder">Continue with this project</p>
+  <a class="btn btn-primary" href="{% url 'tp-projects-page' globus_portal_framework.index %}">
+    Search This Project
+  </a>
+{% endblock %}

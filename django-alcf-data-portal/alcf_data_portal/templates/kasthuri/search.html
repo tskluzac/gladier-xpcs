@@ -1,0 +1,38 @@
+{% extends 'global/tabbed-project/../global/tabbed-project/search.html' %}
+{% load static %}
+
+
+{% block headextras %}
+
+<script src="{% static 'js/../../static/js/on-image-error.js' %}"></script>
+<script src="{% static 'js/../../static/js/image-range-picker.js' %}"></script>
+<script src="{% static 'js/../../static/js/load-images.js' %}"></script>
+
+<script>
+  let searchResultPreviewImages = [
+  {% for result in search.search_results %}
+    {
+      'id': '{{forloop.counter}}',
+      'imgURL': '{{result.center_preview_png.url}}',
+    },
+  {% endfor %}
+  ]
+
+  $(document).ready(function() {
+
+    getAccessToken("{% url 'access_token' %}", "petrel_https_server")
+      .then(response => fetchImages(searchResultPreviewImages, response.token))
+
+  });
+
+</script>
+{% endblock %}
+
+{% block search_form_url %}{{ request.get_full_path }}{% endblock %}
+
+{% block user_not_logged_in_section %}
+{% endblock %}
+
+{% block search_pagination_link %}
+<a class="page-link" onclick="console.log({{page.number}}); customSearch({{page.number}});">{{page.number}}</a>
+{% endblock %}

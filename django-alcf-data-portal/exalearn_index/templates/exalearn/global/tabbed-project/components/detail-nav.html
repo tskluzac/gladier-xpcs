@@ -1,0 +1,14 @@
+{% extends 'global/tabbed-project/components/../../../../../../alcf_data_portal/templates/global/tabbed-project/components/detail-nav.html' %}
+
+{% block detail_nav_transfer_sync_button %}
+<a
+        {% if request.user.is_authenticated %}
+        class="btn btn-primary nav-link active" href="{{helper_page_transfer_url}}"
+        {% else %}
+        class="btn btn-primary nav-link disabled" href="#" style="color:white"
+        {% endif %}
+>
+  <i class="fas fa-exchange-alt"></i>
+  Transfer/Sync
+</a>
+{% endblock %}

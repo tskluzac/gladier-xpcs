@@ -1,0 +1,12 @@
+
+<h1>Automate Actions</h1>
+<ul>
+{% for action in object_list %}
+    <li><a href="{% url 'automate-app:action-detail' action.id %}">{{ action.flow.title }}</a>
+        - {{action.date_created|date}} - {{ action.status }}</li>
+{% empty %}
+    <li>No automation flows yet.</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'automate-app:action-create' %}">Create New Flow</a>

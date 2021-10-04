@@ -1,0 +1,15 @@
+<nav class="dark-background">
+  <ul class="pl-5 pt-2 nav nav-tabs navbar-expand-lg">
+    <li class="ml-5 nav-item">
+      <a class="nav-link h5" href="{% url 'tp-landing-page' globus_portal_framework.index %}">About {{project_title}}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link h5
+         {% if not request.user.is_authenticated %}
+         disabled
+         {% endif %}
+        " href="{% url 'concierge-app:manifest-list' globus_portal_framework.index %}"
+      >Custom Subsets</a>
+    </li>
+  </ul>
+</nav>

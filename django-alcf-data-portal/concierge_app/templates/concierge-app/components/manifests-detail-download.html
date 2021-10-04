@@ -1,0 +1,25 @@
+<div class="card-body">
+  <p class="card-text">Click to Download</p>
+  {% if concierge_bag.metadata.location %}
+  BDBag:
+  <a href="{{concierge_bag.metadata.location}}" class="btn btn-primary">
+  <i class="fas fa-shopping-bag" style="font-size: 18px;"></i><span class="pl-1">Download</span>
+  </a>
+  {% else %}
+  <p>No Downloads available</p>
+  {% endif %}
+</div>
+<div class="card-footer">
+  <a target="blank" href="https://pypi.org/project/bdbag/">Install the BDBag toolset</a>
+  and run through the
+  <a target="blank" href="https://github.com/fair-research/bdbag/blob/master/doc/config.md#keychainjson">setup for Globus</a>
+  to use the BDBag file above. <br>
+  Usage will look like: <br>
+  <div class="container">
+      <code>
+        wget https://my-bag-url/mybag.zip <br>
+        bdbag mybag.zip <br>
+        bdbag --resolve-fetch all mybag <br>
+      </code>
+  </div>
+</div>

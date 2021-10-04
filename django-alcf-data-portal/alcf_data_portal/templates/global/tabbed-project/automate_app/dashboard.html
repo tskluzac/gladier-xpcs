@@ -1,0 +1,36 @@
+{% extends 'global/tabbed-project/../detail-base.html' %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a class="h5" href="{% url 'index-selection' %}">{{globus_portal_framework.project_title}}</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'tp-landing-page' index=globus_portal_framework.index %}">{{globus_portal_framework.index_data.name}}</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'automate-app:dashboard' %}">{{project_info.title}} Automate</a></li>
+{% endblock %}
+
+
+{% block body %}
+<div class="container">
+
+  {%block detail_messages %}
+  <div class="container my-3">
+    {% include "automate_app/components/../../../../../automate_app/templates/automate_app/components/messages.html" %}
+  </div>
+  {% endblock %}
+
+  <div class="row">
+    <div class="col-4">
+      {% with flows as object_list %}
+      {% include 'automate_app/components/flow/../../../../../automate_app/templates/automate_app/components/flow/list.html' %}
+      {% endwith %}
+    </div>
+
+    <div class="col-8">
+      {% block action_list %}
+      {% with actions as object_list %}
+      {% include 'automate_app/components/action/../../../../../automate_app/templates/automate_app/components/action/list.html' %}
+      {% endwith %}
+      {% endblock %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

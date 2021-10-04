@@ -1,0 +1,33 @@
+{% load humanize %}
+
+{% for field_metadata in file.field_metadata %}
+<div class="col-md-12">
+  <h3 class="text-center mb-3 h3">Field Metadata {{file.filename}}</h3>
+  <table class="table table-striped table-bordered">
+    <tbody>
+      {% for row in field_metadata.fields %}
+        <tr>
+        {% for column in row %}
+          <td>
+            {% if column.type == 'url' and column.value %}
+              <a class="btn btn-outline-info btn-sm" target="_blank"
+                 href="{% url 'tp-project-detail' globus_portal_framework.index project column.value.resource|urlencode:'' %}">
+                 {{column.value.filename}} <br>
+              </a>
+            {% elif column.type == 'float' %}
+              {{column.value|floatformat:2|default:'None'}}
+            {% elif column.type == 'int' %}
+              {{column.value|intcomma|default:'None'}}
+            {% elif column.type == 'str' %}
+              {{column.value|truncatechars:10|default:'None'}}
+            {% else %}
+              {{column.value|default:'None'}}
+          {% endif %}
+          </td>
+      {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endfor %}

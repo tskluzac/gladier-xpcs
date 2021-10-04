@@ -1,0 +1,210 @@
+{
+    "count": 3,
+    "total": 3,
+    "gmeta": [
+        {
+            "@datatype": "GMetaResult",
+            "@version": "2017-09-01",
+            "content": [
+                {
+                    "dc": {
+                        "creators": [
+                            {
+                                "creatorName": "Saint, Nickolaus"
+                            }
+                        ],
+                        "dates": [
+                            {
+                                "date": "2020-01-22T21:36:51.542278Z",
+                                "dateType": "Created"
+                            }
+                        ],
+                        "formats": [
+                            "text/plain"
+                        ],
+                        "publicationYear": "2020",
+                        "publisher": "Globus",
+                        "resourceType": {
+                            "resourceType": "Dataset",
+                            "resourceTypeGeneral": "Dataset"
+                        },
+                        "subjects": [
+                            {
+                                "subject": "machine learning"
+                            },
+                            {
+                                "subject": "genomics"
+                            }
+                        ],
+                        "titles": [
+                            {
+                                "title": "demotest3"
+                            }
+                        ],
+                        "version": "1"
+                    },
+                    "files": [
+                        {
+                            "field_metadata": {},
+                            "filename": "test1.txt",
+                            "length": 0,
+                            "md5": "d41d8cd98f00b204e9800998ecf8427e",
+                            "mime_type": "text/plain",
+                            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                            "url": "https://e55b4eab-6d04-11e5-ba46-22000b92c6ec.e.globus.org/XPCSDATA/test/nick-testing/demotest3/test1.txt"
+                        },
+                        {
+                            "field_metadata": {},
+                            "filename": "test2.txt",
+                            "length": 0,
+                            "md5": "d41d8cd98f00b204e9800998ecf8427e",
+                            "mime_type": "text/plain",
+                            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                            "url": "https://e55b4eab-6d04-11e5-ba46-22000b92c6ec.e.globus.org/XPCSDATA/test/nick-testing/demotest3/test2.txt"
+                        }
+                    ],
+                    "project_metadata": {
+                        "project-slug": "nick-testing"
+                    }
+                }
+            ],
+            "entry_ids": [
+                "metadata"
+            ],
+            "subject": "globus://e55b4eab-6d04-11e5-ba46-22000b92c6ec/XPCSDATA/test/nick-testing/demotest3"
+        },
+        {
+            "@datatype": "GMetaResult",
+            "@version": "2017-09-01",
+            "content": [
+                {
+                    "dc": {
+                        "creators": [
+                            {
+                                "creatorName": "Saint, Nickolaus"
+                            }
+                        ],
+                        "dates": [
+                            {
+                                "date": "2020-01-22T19:53:11.059267Z",
+                                "dateType": "Created"
+                            }
+                        ],
+                        "formats": [
+                            "text/plain"
+                        ],
+                        "publicationYear": "2020",
+                        "publisher": "Globus",
+                        "resourceType": {
+                            "resourceType": "Dataset",
+                            "resourceTypeGeneral": "Dataset"
+                        },
+                        "subjects": [
+                            {
+                                "subject": "machine learning"
+                            },
+                            {
+                                "subject": "genomics"
+                            }
+                        ],
+                        "titles": [
+                            {
+                                "title": "demotest2"
+                            }
+                        ],
+                        "version": "1"
+                    },
+                    "files": [
+                        {
+                            "field_metadata": {},
+                            "filename": "testfile.txt",
+                            "length": 37,
+                            "md5": "377b906bdf9a2a519c2fed65a22e7147",
+                            "mime_type": "text/plain",
+                            "sha256": "bb3b4b2c2b625e0f6eb15ead3b82e7368196dc4d056c3c1cbd9ef11be93f93d2",
+                            "url": "https://e55b4eab-6d04-11e5-ba46-22000b92c6ec.e.globus.org/XPCSDATA/test/nick-testing/demotest2/testfile.txt"
+                        }
+                    ],
+                    "project_metadata": {
+                        "project-slug": "nick-testing"
+                    }
+                }
+            ],
+            "entry_ids": [
+                "metadata"
+            ],
+            "subject": "globus://e55b4eab-6d04-11e5-ba46-22000b92c6ec/XPCSDATA/test/nick-testing/demotest2"
+        },
+        {
+            "@datatype": "GMetaResult",
+            "@version": "2017-09-01",
+            "content": [
+                {
+                    "dc": {
+                        "creators": [
+                            {
+                                "creatorName": "Saint, Nickolaus"
+                            }
+                        ],
+                        "dates": [
+                            {
+                                "date": "2020-01-29T17:08:32.898992Z",
+                                "dateType": "Created"
+                            }
+                        ],
+                        "formats": [
+                            "text/plain"
+                        ],
+                        "publicationYear": "2020",
+                        "publisher": "Globus",
+                        "resourceType": {
+                            "resourceType": "Dataset",
+                            "resourceTypeGeneral": "Dataset"
+                        },
+                        "subjects": [
+                            {
+                                "subject": "machine learning"
+                            },
+                            {
+                                "subject": "genomics"
+                            }
+                        ],
+                        "titles": [
+                            {
+                                "title": "dev-test1"
+                            }
+                        ],
+                        "version": "1"
+                    },
+                    "files": [
+                        {
+                            "field_metadata": {},
+                            "filename": "dev-test1b.txt",
+                            "length": 111,
+                            "md5": "5286c172fc98cd6d7723987700c420ef",
+                            "mime_type": "text/plain",
+                            "sha256": "22e6361406cb7d57d6591db90a49ab3ef1566199eb984da85d0332e8ae6c8ed6",
+                            "url": "https://e55b4eab-6d04-11e5-ba46-22000b92c6ec.e.globus.org/XPCSDATA/test/nick-testing/dev-test1/dev-test1b.txt"
+                        },
+                        {
+                            "field_metadata": {},
+                            "filename": "dev-test1a.txt",
+                            "length": 60,
+                            "md5": "f5c6862b19c453d4e2ef7254753240e0",
+                            "mime_type": "text/plain",
+                            "sha256": "c1be1cd060a4189a36634449658d6aaf1ac77d6f7bd50584bb67a80b65ebf525",
+                            "url": "https://e55b4eab-6d04-11e5-ba46-22000b92c6ec.e.globus.org/XPCSDATA/test/nick-testing/dev-test1/dev-test1a.txt"
+                        }
+                    ],
+                    "project_metadata": {
+                        "project-slug": "nick-testing"
+                    }
+                }
+            ],
+            "entry_ids": [
+                "metadata"
+            ],
+            "subject": "globus://e55b4eab-6d04-11e5-ba46-22000b92c6ec/XPCSDATA/test/nick-testing/dev-test1"
+        }
+    ]
+}

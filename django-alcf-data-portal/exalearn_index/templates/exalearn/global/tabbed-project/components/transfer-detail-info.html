@@ -1,0 +1,95 @@
+
+<div class="card my-3 border-info">
+  <div class="card-header">
+    <p class="navbar-brand my-0 mp-0">Transfer Status</p>
+  </div>
+  <div class="card-body px-0 py-0 my-0">
+    <div class="row">
+      <div class="col-6">
+        <table class="table table-striped">
+          <tbody>
+          <tr>
+            <td>Source</td>
+            <td>
+              <a target="_blank"
+                 href="https://app.globus.org/file-manager?origin_id={{transfer.data.source_endpoint_id}}">
+                {{transfer.data.source_endpoint_display_name}}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>Destination</td>
+            <td>
+              <a target="_blank"
+                 href="https://app.globus.org/file-manager?origin_id={{transfer.data.destination_endpoint_id}}&origin_path={{transfer.data.destination_path_prefix}}">
+                {{transfer.data.destination_endpoint_display_name}}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>Label</td>
+            <td>
+              {{transfer.data.label}}
+            </td>
+          </tr>
+          <tr>
+            <td>Date Started</td>
+            <td>
+              {{transfer.data.request_time}}
+            </td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td><a target="blank" href="https://app.globus.org/activity/{{transfer.task_id}}/overview">{{transfer.data.status}}</a></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-6">
+        <table class="table table-striped">
+          <tbody>
+          <tr>
+            <td>Files Transferred</td>
+            <td>
+              {{transfer.data.files_transferred}}
+            </td>
+          </tr>
+          <tr>
+            <td>Total Data Transferred</td>
+            <td>
+              {% if not transfer.data.bytes_transferred %}
+              Not Available
+              {% else %}
+              {{transfer.data.bytes_transferred|filesizeformat}}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td>Speed</td>
+            <td>
+              {% if not transfer.data.effective_bytes_per_second %}
+              Not Available
+              {% else %}
+              {{transfer.data.effective_bytes_per_second|filesizeformat}}/sec
+              {% endif %}
+
+            </td>
+          </tr>
+          <tr>
+            <td>Date Completed</td>
+            <td>
+              {{transfer.data.completion_time}}
+            </td>
+          </tr>
+          <tr>
+            <td>Status Description</td>
+            <td>
+              {{transfer.data.nice_status_short_description}}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+{% load index_template %}
+<form action="{% url 'concierge-app:manifest-limiter-checkout' index %}" method="post">
+
+  <div class="form-group">
+    {% with form.get_search_collector.search_data as search_data %}
+    <label for="numberOfResults">Number of results to use (out of {{search_data.total}})</label>
+    <input type="number" class="form-control" id="numberOfResults" min="1" max="3000" name="limit"
+           {% if search_data.total > 3000 %}value="3000"{% else %}value="{{search_data.total}}"{% endif %}
+            aria-describedby="numbebrOfResultsHelpBlock">
+    <small id="numberOfResultsHelpBlock" class="form-text text-muted">
+      Choose a subset of the total results. Limited to 3,000.
+    </small>
+    {% endwith %}
+  </div>
+  <div class="form-group">
+    <label for="name">Manifest Name</label>
+    <input type="text" class="form-control" id="name" name="name" value="{{form.name.value}}" aria-describedby="manifestNameHelpBlock">
+    <small id="manifestNameHelpBlock" class="form-text text-muted">
+      A name to distinguish this manifest
+    </small>
+  </div>
+  <input name="search_url" value="{{form.search_url.value}}" hidden>
+  <input name="index" value="{{form.index.value}}" hidden>
+  <input name="project" value="{{form.project.value}}" hidden>
+  <input name="query" value="{{form.query.value}}" hidden>
+  <input name="filters" value="{{form.filters.value}}" hidden>
+  {% csrf_token %}
+  {% block checkout_subject_selection %}
+  {% endblock %}
+
+  {% block form_extras %}
+  {% endblock %}
+  <button type="submit" class="btn btn-primary">Create Manifest</button>
+</form>

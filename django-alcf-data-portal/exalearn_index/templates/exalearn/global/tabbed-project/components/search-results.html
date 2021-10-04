@@ -1,0 +1,66 @@
+{% load humanize %}
+
+<div class="row">
+  <div class="col-md-3">
+    <h3 class="h3">Results</h3>
+    <h6 class="h6">{{search.total}} datasets found</h6>
+  </div>
+  <div class="col-md-5"></div>
+  <div class="col-md-4">
+    {% include 'exalearn/concierge-app/components/checkout-button.html' %}
+  </div>
+</div>
+<div id="search-result" class="search-result">
+  {% for result in search.search_results %}
+  <div class="card my-3">
+    <div class="card-header">
+      <h3 class="search-title">
+        <a href="{% url 'tp-project-detail' globus_portal_framework.index project result.subject %}">
+          {{result.title|default:'Sample'}}
+        </a>
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-9">
+          <table class="table table-sm borderless">
+            <tbody>
+              {% block result_table_content %}
+              <tr>
+                {% for display_info in result.search_results %}
+                <th>{{display_info.name}}</th>
+                {% endfor %}
+              </tr>
+              <tr>
+                {% for display_info in result.search_results %}
+                {% if display_info.type == 'int' %}
+                <td>{{display_info.value|intcomma}}</td>
+                {% elif display_info.type == 'float' %}
+                <td>{{display_info.value|floatformat:3}}</td>
+                {% else %}
+                <td>{{display_info.value}}</td>
+                {% endif %}
+                {% endfor %}
+              </tr>
+              {% endblock %}
+            </tbody>
+          </table>
+          {% block search_footer_content %}
+          <p class="card-text">Filename:
+            <a class="btn btn-outline-info btn-sm" target="_blank" href="{{result.https_url}}">{{result.filename}}</a>
+          </p>
+          {% if result.file_size %}
+          <p class="card-text">Size: {{result.file_size|filesizeformat}}</p>
+          {% endif %}
+          {% endblock %}
+        </div>
+        <div class="col-md-3 mb-0">
+          {% with authenticated_preview_image=result.search_preview_image %}
+          {% include 'exalearn/components/authenticated-preview.html' %}
+          {% endwith %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>

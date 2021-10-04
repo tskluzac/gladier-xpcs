@@ -1,0 +1,31 @@
+<div class="card">
+  <div class="card-header">Running Flows</div>
+  <div class="card-body">
+    <table class="table table-sm">
+      <thead class="">
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Status</th>
+        <th scope="col">Started</th>
+        <th scope="col">Completed</th>
+        <!--<th scope="col">Runtime</th>-->
+      </tr>
+      </thead>
+      <tbody>
+      {% for action in actions %}
+      <tr>
+        <td>
+          {% block action_list_url %}
+            <a href="{% url 'automate-app:action-detail' action.id %}">{{action}}</a>
+          {% endblock %}
+        </td>
+        <td>{{action.status}}</td>
+        <td>{{action.date_created|date:"DATETIME_FORMAT"}}</td>
+        <td>{% if action.date_completed %}{{action.date_completed|date:"DATETIME_FORMAT"}}{%endif%}</td>
+        <!--<td>{{action.runtime_formatted}}</td>-->
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+{% extends 'global/tabbed-project/components/../../../../global/tabbed-project/components/search-facets.html' %}
+{% load xpcs_filters %}
+
+{% block facet_value %}
+{% if field.field_name == 'project_metadata.aps_cycle_v2' %}
+{{field.value|format_aps_cycle_v2}}
+{% else %}
+{{block.super}}
+{% endif %}
+{% endblock %}

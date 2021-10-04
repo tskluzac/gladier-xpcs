@@ -1,0 +1,102 @@
+{%extends "global/tabbed-project/../global/tabbed-project/detail-base.html" %}
+{% load static humanize %}
+
+{% block headextras %}
+<script type="text/javascript" src="{% static 'js/../../static/js/general-preview.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/search.css" />
+<script>
+  // Disable Column Truncation
+  // TRUNCATE_TABULAR_DATA_COLUMNS = 0;
+
+  let rfmFiles = [
+  {% for file in remote_file_manifest %}
+    {
+      'id': '{{forloop.counter0}}',
+      'filename': '{{file.filename}}',
+      'url': '{{file.url}}',
+      'mimetype': '{{file.mime_type|default:"image/png"}}',
+      'previewBytes': '{{file.previewbytes}}',
+    },
+  {% endfor %}
+  ]
+  function f(file, name) {
+      getAccessToken("{% url 'access_token' %}", "petrel_https_server")
+      .then(token => loadContent(file, token, name))
+  }
+
+  for (var i = 0; i < rfmFiles.length; i++) {f(rfmFiles[i], 'preview-content-' + i)}
+</script>
+{% endblock %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a class="h5" href="{% url 'index-selection' %}">{{globus_portal_framework.project_title}}</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'tp-landing-page' index=globus_portal_framework.index %}">{{globus_portal_framework.index_data.name}}</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'tp-project-search' index=globus_portal_framework.index project=project %}">{{project_info.title}} Search</a></li>
+<li class="breadcrumb-item active"><a class="h5">{{title|default:'Search Result'}}</a></li>
+{% endblock %}
+
+{% block detail_back_to_search %}
+<div class="container mt-3">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-info" role="alert">
+        <a href="{% url 'tp-project-search' globus_portal_framework.index project %}?{{request.session.search.full_query}}">Back to Search</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block detail_body %}
+
+
+<h3 class="text-center mb-3 h3">Metadata</h3>
+
+
+<div class="row">
+
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <div class="alert alert-secondary" role="alert">
+      <p>{{description|default:'No description was provided for this entry.'}}</p>
+    </div>
+  </div>
+  <div class="col-md-1"></div>
+
+  <div class="col-md-1"></div>
+  <div class="col-md-5">
+    {% include 'candle_pilot1/components/detail-overview/components/detail-overview/dc-metadata.html' %}
+  </div>
+  <div class="col-md-5">
+    {% include 'candle_pilot1/components/detail-overview/components/detail-overview/project-metadata.html' %}
+  </div>
+  <div class="col-md-1"></div>
+
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <ul class="nav nav-pills" id="myTab" role="tablist">
+          {% for file in remote_file_manifest %}
+          <li class="nav-item">
+            <a class="nav-link
+              {% if forloop.counter0 == 0 %}active{%endif%}
+              " id="nav-file-{{forloop.counter0}}-tab" data-toggle="pill" href="#file-{{forloop.counter0}}" role="tab" aria-controls="file-{{forloop.counter0}}" aria-selected="{% if forloop.counter0 == 0 %}true{%else%}false{%endif%}">{{file.filename}}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="card-body">
+        <div class="tab-content" id="files-content">
+        {% for file in remote_file_manifest %}
+            <div class="tab-pane fade {% if forloop.counter0 == 0 %}show active{%endif%}
+              " id="file-{{forloop.counter0}}" role="tabpanel" aria-labelledby="nav-file-{{forloop.counter0}}-tab">
+              {% include 'candle_pilot1/components/detail-overview/components/detail-overview/field-metadata.html' %}
+              {% include 'candle_pilot1/components/detail-overview/components/detail-overview/client-side-preview.html' %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

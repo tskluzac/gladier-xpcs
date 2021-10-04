@@ -1,0 +1,7 @@
+{%extends "concierge-app/tabbed-project/manifest-checkout.html" %}
+{% load index_template %}
+
+{% block manifest_create_form %}
+{% index_template 'concierge-app/components/checkout-form-manifest-limiter.html' as manifest_limiter_form %}
+{% include manifest_limiter_form %}
+{% endblock %}

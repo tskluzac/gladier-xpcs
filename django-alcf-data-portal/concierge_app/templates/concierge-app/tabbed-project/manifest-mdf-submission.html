@@ -1,0 +1,33 @@
+{%extends "global/tabbed-project/../../../../alcf_data_portal/templates/global/tabbed-project/base.html" %}
+{% load static index_template %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col">
+    <h2 class="text-center">Requesting Access To MDF</h2>
+  </div>
+</div>
+
+<div class="row mb-5">
+  <div class="col"></div>
+  <div class="col-10">
+    <div>
+      <h1 class="text-center">Submit Collection to MDF</h1>
+      <div class="card">
+        <div class="card-body">
+        {% block mdf_submission_form %}
+          {% index_template 'concierge-app/components/mdf-submission-form.html' as mdf_submission_form %}
+          {% include mdf_submission_form %}
+        {% endblock %}
+          {% if form.is_bound and form.errors %}
+          <div class="alert alert-danger my-3" role="alert">{{form.errors}}</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col"></div>
+</div>
+
+{% endblock %}

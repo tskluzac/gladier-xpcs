@@ -1,0 +1,70 @@
+{% load static index_template is_active %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {# CSS files #}
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+
+    {# Custom Fonts #}
+    <script type="text/javascript" src="{% static 'js/fontawesome-all.min.js' %}"></script>
+
+    {# Javascript #}
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+    {# Django CSRF Protection #}
+    {% csrf_token %}
+
+    {% block search_head %}{% endblock %}
+
+    {# Extras #}
+    {%block headextras%}
+    {% index_template 'global/tabbed-project/components/base-head-extras.html' as bhe %}
+    {% include bhe %}
+    {%endblock%}
+
+    {% include 'global/components/../components/google-analytics-tracking.html' %}
+
+    {# Custom ALCF Colors and Fonts #}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/../../../static/css/alcf.css' %}" />
+
+    <title>{%block title%}{%endblock%}</title>
+
+  </head>
+  <body>
+
+    {% block base_nav %}
+    {% index_template 'global/tabbed-project/components/base-nav.html' as base_nav %}
+    {% include base_nav %}
+    {% endblock %}
+
+    {% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        {% block breadcrumb_items %}
+        <li class="breadcrumb-item {% is_active request 'index-selection' %}"><a class="h5" href="{% url 'index-selection' %}">{{globus_portal_framework.project_title}}</a></li>
+        {% endblock %}
+      </ol>
+    </nav>
+    {% endblock %}
+
+    {% block tp_nav %}
+    {% index_template 'global/tabbed-project/components/tabbed-nav.html' as tp_nav %}
+    {% include tp_nav %}
+    {% endblock %}
+
+    <!-- Page body -->
+    {%block body%}
+    {%endblock%}
+
+    <!-- Page footer -->
+    {% index_template 'components/footer.html' as it_footer %}
+    {% include it_footer %}
+  </body>
+</html>

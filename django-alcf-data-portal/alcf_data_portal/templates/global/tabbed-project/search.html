@@ -1,0 +1,110 @@
+{%extends "global/tabbed-project/base.html" %}
+
+{% load static %}
+{% load index_template %}
+
+{%block title%}Search{%endblock%}
+
+{%block search_head%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}" />
+<script>
+  /*
+  This helper function ensures queries are inserted as the first query-param
+  so that the search url is copy-pastable by the user
+  */
+  function customSearch(page={{ search.pagination.current_page|default:"1"}}) {
+    //copy as a hidden field so we don't change the look of the page
+    var page = $('<input>').attr({type: 'hidden', id: 'foo',
+                                 name: 'page', value: page});
+    var input = $('#search-input').clone().attr('type','hidden');
+    $('#facet-form').prepend(page).prepend(input).submit();
+  }
+</script>
+
+{%endblock%}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a class="h5" href="{% url 'index-selection' %}">{{globus_portal_framework.project_title}}</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'tp-landing-page' index=globus_portal_framework.index %}">{{globus_portal_framework.index_data.name}}</a></li>
+<li class="breadcrumb-item active"><a class="h5">{{project_info.title}} Search</a></li>
+{% endblock %}
+
+{%block body%}
+
+
+<div class="container">
+
+  <div class="mt-4">
+    {% index_template 'components/messages.html' as it_mess %}
+    {% include it_mess %}
+  </div>
+
+  {% block search_form %}
+  <form id="search-form" class="my-4" name="search_form"
+        action="{% block search_form_url %}{% url 'tp-project-search' globus_portal_framework.index project %}{% endblock %}">
+    <input type="text" id="search-input" autocomplete="off"
+           data-provide="typeahead" name="q"
+           value="{{request.session.search.query}}" placeholder="Start your search here">
+    <button id="search-btn" type="submit" class="btn btn-default">
+      <i class="fas fa-search"></i>
+    </button>
+  </form>
+  {% endblock %}
+
+  <div class="row">
+    {% block search_facets %}
+    <div id="sidebar" class="col-xs-12 col-sm-4 col-md-4">
+      <div id="filters">
+        <div id="facet-container">
+          <form id="facet-form">
+            {% index_template 'global/tabbed-project/components/search-facets.html' as it_search_facets %}
+            {% include it_search_facets %}
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+
+
+    <div id="content" class="col-xs-12 col-sm-8 col-md-8">
+
+      <div id="results" style="display: inline;">
+        {% if not request.user.is_authenticated %}
+        {% block user_not_logged_in_section %}
+        <div class="alert alert-dark" role="alert">
+          NOTE: Your search results are limited. Logging in can improve search
+          results by displaying private results if you have permissions associated
+          with your account.
+        </div>
+        {% endblock %}
+        {% elif globus_portal_framework.search_debugging_enabled %}
+        <div class="alert alert-dark" role="alert">
+          See Debugging for fields <a href="{% url 'tp-search-debug' globus_portal_framework.index %}">here</a>.
+        </div>
+        {% endif %}
+        {% index_template 'global/tabbed-project/components/search-results.html' as it_search_results %}
+        {% include it_search_results %}
+
+        {% block search_pagination %}
+        <div class="row justify-content-md-center">
+          <ul class="pagination">
+            {% for page in search.pagination.pages %}
+            {% if page.number == search.pagination.current_page %}
+            <li class="page-item active">
+            {% else %}
+            <li class="page-item">
+            {% endif %}
+              {% block search_pagination_link %}
+              <a class="page-link" href="" onclick="customSearch({{page.number}});">{{page.number}}</a>
+              {% endblock %}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endblock %}
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

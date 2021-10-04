@@ -1,0 +1,97 @@
+{% extends 'automate_app/components/components/detail-base.html' %}
+
+{% block detail_body %}
+{% block title %}
+<h3 class="text-center mb-3 h3">{{object.flow.title}}</h3>
+{% endblock %}
+<div class="row">
+
+  <div class="col-md-7">
+    <table class="table table-striped table-bordered">
+      <tbody>
+      {% block action_table_detail %}
+      <tr>
+        <td>Flow ID: </td>
+        <td><a href="{% url 'automate-app:flow-detail' object.flow.id %}">{{object.flow.flow_id}}</a></td>
+      </tr>
+      <tr>
+        <td>Group</td>
+        <td><a href="https://app.globus.org/groups/{{object.flow.group}}" target="_blank">Open in new tab</a></td>
+      </tr>
+      <tr>
+        <td>Action ID: </td>
+        <td>{{object.action_id}}</td>
+      </tr>
+      <tr>
+        <td>Status</td>
+        <td>{{object.status}}</td>
+      </tr>
+      <tr>
+        <td>Started</td>
+        <td>{{object.date_created|date:"DATETIME_FORMAT"}}</td>
+      </tr>
+      <tr>
+        <td>Completed</td>
+        <td>{{object.date_completed|date:"DATETIME_FORMAT"}}</td>
+      </tr>
+      {% endblock %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-md-3">
+    <!--<img src="#" alt="Imagine a picture of the flow here...">-->
+  </div>
+
+  {% for state in object.get_details %}
+  <div class="col-md-12 my-2">
+    <div class="card">
+      <div class="card-header">{{state.name}} Details</div>
+      <div class="card-body">
+        <p>State Name: {{state.name}}</p>
+        <p>Action ID: {{state.action_id}}</p>
+
+        <p>Status: {{state.status}}</p>
+        <!--<p>Started: {% if state.start_time %}{{state.start_time|date:"DATETIME_FORMAT"}}{% endif %}</p>-->
+        <!--<p>Completed: {% if state.start_time %}{{state.completion_time|date:"DATETIME_FORMAT"}}{% endif %}</p>-->
+        <!--<p>Release After: {{state.release_after}}</p>-->
+
+        {% if state.status == 'ACTIVE' or state.status == 'FAILED' %}
+        <div class="card">
+          <div class="card card-header">
+            {{state.name}} Output
+          </div>
+            <div class="card card-body">
+              <pre style="white-space: pre-wrap;">{{state.general_output_pre}}</pre>
+            </div>
+        </div>
+        {% else %}
+        <div class="card">
+          <div class="card card-header" data-toggle="collapse" data-target="#collapse-{{state.name}}-input" aria-expanded="false" aria-controls="#collapse-{{state.name}}-input">
+            {{state.name}} Input
+          </div>
+          <div class="collapse" id="collapse-{{state.name}}-input">
+            <div class="card card-body">
+              <pre>{{state.input_pre}}</pre>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card card-header" data-toggle="collapse" data-target="#collapse-{{state.name}}-output" aria-expanded="false" aria-controls="collapse-{{state.name}}-output">
+           {{state.name}} Output
+          </div>
+          <div class="collapse" id="collapse-{{state.name}}-output">
+            <div class="card card-body">
+              <pre>{{state.output_pre}}</pre>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+
+{% endblock %}

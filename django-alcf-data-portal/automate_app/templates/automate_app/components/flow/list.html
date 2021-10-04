@@ -1,0 +1,28 @@
+<div class="card">
+  <div class="card-header">Deployed Flows</div>
+  <div class="card-body">
+    {% for flow in object_list %}
+    <table class="table table-sm table-bordered mb-5">
+      <thead class="table-active">
+      <tr>
+        <td colspan="2">{{flow.title}}</td>
+      </tr>
+      </thead>
+      <tbody class="">
+      <!--<tr>-->
+        <!--<td>Flow ID</td>-->
+        <!--<td><a href="{% url 'automate_app:flow-detail' {{flow.id}}">Flow Definition</a></td>-->
+      <!--</tr>-->
+      <tr>
+        <td>Group</td>
+        <td><a href="https://app.globus.org/groups/{{flow.group}}" target="_blank">Open in new tab</a></td>
+      </tr>
+      <tr>
+        <td>Created</td>
+        <td>{{flow.date_created|date:"DATETIME_FORMAT"}}</td>
+      </tr>
+      </tbody>
+    </table>
+    {% endfor %}
+  </div>
+</div>

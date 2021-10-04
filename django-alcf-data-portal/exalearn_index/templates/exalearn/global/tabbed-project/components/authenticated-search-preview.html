@@ -1,0 +1,71 @@
+{% comment %}
+
+NOTE: Don't use this! It's a hack for displaying files, but files should be
+fetched via an api call
+
+
+This module asynchronously loads images on the page after the html page has been
+loaded (Basically, the same thing as a <img> tag). However, each request is
+authorized with a user access token based on the setting in:
+
+settings.SEARCH_INDEXES.myindex.resource_server
+
+Note: settings.SOCIAL_AUTH_GLOBUS_SCOPE must also contain the correct scope for the
+https server you want to use. AND, settings.ALLOWED_FRONTEND_TOKENS must also contain
+the string name of your resource server in order for the call to api.get_access_token()
+to work successfully.
+{% endcomment %}
+
+<script>
+  // Disable Column Truncation
+  // TRUNCATE_TABULAR_DATA_COLUMNS = 0;
+  let PREVIEW_DIV_ID = 'preview-content-';
+  let RESOURCE_SERVER = '{{globus_portal_framework.index_data.resource_server}}'
+
+  if (RESOURCE_SERVER == '') {
+    console.error('No HTTPS resource server set for index! Configure ' +
+                  'settings.SEARCH_INDEXES.myindex.resource_server to fetch authenticated ' +
+                  'content')
+  }
+
+  let rfmFiles = [
+  {% for result in search.search_results %}
+    {
+      'id': '{{forloop.counter}}',
+      'url': '{{result.search_preview_image.url}}',
+      'caption': '{{result.search_preview_image.caption}}',
+      'mimetype': 'image/png',
+      'loaded': false,
+    },
+  {% endfor %}
+  ]
+  var accessToken = null;
+
+  async function loadInitialImages() {
+    try {
+      accessToken = await getAccessToken("{% url 'access_token' %}", RESOURCE_SERVER)
+    } catch (error) {console.error('Fetching access token failed!')}
+
+    for (var i = 0; i < rfmFiles.length; i++)  {
+      loadFile(rfmFiles[i])
+    }
+  }
+
+  function loadFile(file_record) {
+    if (file_record.loaded != true) {
+      console.log('Loading file ' + file_record.url);
+      loadContent(file_record, accessToken, PREVIEW_DIV_ID + file_record.id);
+      file_record['loaded'] = true;
+    }
+  }
+
+  function getFile(filename) {
+    for ( var i = 0; i < rfmFiles.length; i++) {
+      if (rfmFiles[i]['filename'] === filename) {
+        return rfmFiles[i];
+      }
+    }
+  }
+
+  loadInitialImages();
+</script>

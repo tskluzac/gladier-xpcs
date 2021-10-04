@@ -1,0 +1,99 @@
+
+<h3 class="text-center">Transfer Status</h3>
+<div class="accordion" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125); border-radius: calc(0.25rem - 1px);" id="accordion-sidebar">
+  {% for manifest_transfer in manifest_transfers %}
+  {% block manifests_transfer_detail_manifest %}
+  <div class="card manifest-{{manifest_transfer.manifest.id}}" id="manifest-transfer-{{manifest_transfer.id}}">
+    <div class="card-header" id="heading-{{manifest_transfer}}">
+      <div class="row">
+        <div class="col-sm-9">
+          {{manifest_transfer.manifest.metadata.name}}
+        </div>
+        <div class="col-sm-3">
+          <button class="btn btn-sm btn-primary nav-link active my-0 py-0" data-toggle="collapse" data-target="#collapse-sidebar-description-{{manifest_transfer.id}}" aria-expanded="true" aria-controls="collapse-sidebar-description-{{manifest_transfer.id}}">
+            <i class="fas fa-info-circle" style="font-size: 12px;"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="collapse-sidebar-description-{{manifest_transfer.id}}"
+         class="collapse
+         {% if manifest_transfer.is_active %}
+         show
+         {% endif %}"
+         aria-labelledby="heading-{{manifest_transfer.id}}" data-parent="#accordion-sidebar">
+      <div class="card-body px-0 py-0 my-0">
+        <table class="table table-striped">
+          <tbody>
+          <tr>
+            <td>Status</td>
+            <td>
+              <a id="manifest-transfer-status-{{manifest_transfer.id}}" target="_blank"
+                 href="https://app.globus.org/activity/{{manifest_transfer.info.task_id}}/overview">
+                {{manifest_transfer.status}}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>Date Started</td>
+            <td>
+              {{manifest_transfer.date_created}}
+            </td>
+          </tr>
+          {% for transfer in manifest_transfer.metadata.transfers %}
+          <tr>
+            <td>Source</td>
+            <td>
+              <a target="_blank"
+                 href="https://app.globus.org/file-manager?origin_id={{manifest_transfer.metadata.source_endpoint_id}}">
+                {{transfer.source_endpoint_display_name}}
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td>Destination</td>
+            <td>
+              <a target="_blank"
+                 href="https://app.globus.org/file-manager?origin_id={{manifest_transfer.metadata.destination_endpoint_id}}&origin_path={{manifest_transfer.info.destination_path_prefix}}">
+                {{manifest_transfer.metadata.transfers.0.destination_endpoint_display_name}}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>Files Transferred</td>
+            <td>
+              {{manifest_transfer.files_transferred}}
+            </td>
+          </tr>
+          <tr>
+            <td>Total Data Transferred</td>
+            <td>
+              {{manifest_transfer.bytes_transferred|filesizeformat}}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              {% if manifest_transfer.status == 'ACTIVE' %}
+              <button id="manifest-transfer-button-{{manifest_transfer.id}}" class="btn btn-danger nav-link active" onclick="cancelManifestTransfer({{manifest_transfer.id}});">Cancel Transfer</button>
+              {% else %}
+              <button id="manifest-transfer-button-{{manifest_transfer.id}}" class="btn btn-info nav-link active manifest-transfer-button-{{manifest_transfer.id}}" onclick="deleteManifestTransfer({{manifest_transfer.id}});">Remove</button>
+              {% endif %}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+  {% empty %}
+  {% block manifests_transfer_detail_empty %}
+    <div class="card">
+      <div class="card-header">
+        You have no current transfers. Once you transfer the contents of your manifest, you will see details on your transfer here.
+      </div>
+    </div>
+  {% endblock %}
+  {% endfor %}
+</div>

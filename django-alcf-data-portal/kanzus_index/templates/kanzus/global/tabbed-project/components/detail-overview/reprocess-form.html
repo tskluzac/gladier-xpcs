@@ -1,0 +1,86 @@
+
+
+<div class="my-3 collapse {% if form.errors%}show{%endif%}" id="reprocessForm" style="">
+  <div class="card card-body" style="width:100%">
+    <h5 class="text-center">Reprocess {{title}}</h5>
+    <div id="copy-area" class="alert alert-info" role="alert">
+      {% if form.errors %}
+      <div class="alert alert-danger" role="alert">{{form.errors}}</div>
+      {% endif %}
+      <form action="{% url 'kanzus-index:sample-reprocess' globus_portal_framework.index project subject %}"
+        method="POST">{% csrf_token %}
+        <input name="subject" value="{{subject}}" hidden>
+        <input name="project" value="{{project}}" hidden>
+        <input name="options_data" value="'{}'" hidden>
+
+        <label>Reprocessing the chip will re-run dials on each CBF with different parameters.</label>
+        {% if not can_reprocess %}
+          <div class="alert alert-warning" role="alert">
+            <h5>Under Construction</h5>
+
+            <p>Reprocessing is still in Alpha and is only allowed by select individuals.</p>
+
+            <p>We will open it up when it is stable!</p>
+          </div>
+        <div class="form-group">
+          <button type="submit" class="btn mb-2 btn-primary disabled" disabled>Submit Reprocessing</button>
+        </div>
+          {% else %}
+        <div class="row">
+          <div class="col form-group">
+            <label for="runName">Run Name</label>
+            <input class="form-control" id="runName" name="run_name"  value="{{form.run_name.value|default:'S9'}}">
+            <small id="RunNameHelp" class="form-text text-muted">The name for this run</small>
+          </div>
+        </div>
+                <input name="remote_path" value="{{project_metadata.trigger_name}}" hidden>
+
+        <div class="row">
+          <div class="col form-group">
+              <label for="runName">APS Data Root</label>
+              <input class="form-control" id="apsDataRoot" name="aps_data_root"  value="{{form.aps_data_root.value|default:'/gdata/dm/SBC/SSX-DATA/ssx9/'}}">
+              <small id="apsDataRootHelp" class="form-text text-muted">The source location prefix for the data. Should not include run name, protein, or chip letter</small>
+          </div>
+        </div>
+<!--        <div class="row">-->
+<!--          <div class="col form-group">-->
+<!--              <label for="runName">Theta Root Path</label>-->
+<!--              <input class="form-control" id="theta_root" name="theta_root"  value="/projects/APSDataAnalysis/nick/SSX/">-->
+<!--              <small id="theta_base_path_help" class="form-text text-muted">The base path to use on theta. You MUST have permission to write to this directory</small>-->
+<!--          </div>-->
+<!--        </div>-->
+        <div class="row">
+          <div class="col form-group">
+              <label for="runName">Trigger Name</label>
+              <input class="form-control" id="remote_path" name="remote_path"  value="{{form.remote_path.value|default:project_metadata.trigger_name}}">
+              <small id="remote_path_help" class="form-text text-muted">The file used by DM to trigger the initial flow. Reprocessing will automatically submit from 1 to the suffix number on the file, in increments of 256</small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col form-group">
+          <label for="nproc">Number of Processes</label>
+          <input class="form-control" type="number" id="nproc" name="nproc" min="0" max="512" value="{{form.nproc.value|default:256}}">
+          <small id="nprocHelp" class="form-text text-muted">Number of processes to run on each Theta Node</small>
+        </div>
+        </div>
+        <div class="form-group">
+          <label>Beam Coordinates</label>
+        </div>
+        <div class="row">
+          <div class="col-4 form-group">
+            <label for="beamx">Beam X</label>
+            <input class="form-control" type="number" id="beamx" name="beamx" value="{{form.beamx.value|default:-214.400}}">
+          </div>
+          <div class="col-4 form-group">
+            <label for="beamy">Beam Y</label>
+            <input class="form-control" type="number" id="beamy" name="beamy" value="{{form.beamy.value|default:218.200}}">
+          </div>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn mb-2 btn-primary">Submit Reprocessing</button>
+        </div>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</div>

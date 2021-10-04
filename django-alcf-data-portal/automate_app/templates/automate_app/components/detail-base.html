@@ -1,0 +1,43 @@
+{% extends 'automate_app/components/base.html' %}
+
+{%block headextras%}
+{%endblock%}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a class="h5" href="{% url 'automate-app:dashboard' %}">Automate</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'automate-app:action-detail' object.id %}">{{object.flow.title}}</a></li>
+{% endblock %}
+
+{% block body %}
+
+{% block detail_back %}
+<div class="container mt-3">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-info" role="alert">
+        {% block detail_back_url %}
+        <a href="{% url 'automate-app:dashboard' %}">Back to Dashboard</a>
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{%block detail_messages %}
+<div class="container my-3">
+  {% include "automate_app/components/messages.html" %}
+</div>
+{% endblock %}
+
+<div class="container my-3">
+  <div class="card">
+    <div class="card-body">
+      <div class="container">
+        {%block detail_body %}{%endblock%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

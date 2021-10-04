@@ -1,0 +1,51 @@
+{% if preview_image %}
+<div class="col-sm-6">
+
+    <div id="search-results-preview-image-loading-{{preview_image.id}}">
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card" id="search-results-preview-image-group-{{preview_image.id}}" style="display: none">
+      <img class="card-image-top img img-responsive full-width"
+           height="100%"
+           width="100%"
+           src="#"
+           id="search-results-preview-image-{{preview_image.id}}"
+           >
+      <div class="card-body">
+        <p class="card-text">
+          Filename: {{preview_image.filename}}
+        </p>
+
+        <div class="row">
+          <div class="col-12">
+            <i class="fas fa-adjust"></i>
+            <input type="range" min="70" max="120" value="{{kasthuri_contrast_default}}" step="1" class="slider"
+                   style="width: 90%"
+                   id="search-results-preview-contrast-slider-{{preview_image.id}}"
+                   oninput="onRangeInputEvent({{preview_image.id}});">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <i class="fas fa-sun"></i>
+            <input type="range" min="0" max="3200" value="{{kasthuri_brightness_default}}" step=".01" class="slider"
+                   style="width: 90%"
+                   id="search-results-preview-brightness-slider-{{preview_image.id}}"
+                   width="100%"
+                   oninput="onRangeInputEvent({{preview_image.id}});">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {% else %}
+  <p>No Preview Available</p>
+  {% endif %}

@@ -1,0 +1,45 @@
+{% extends 'global/tabbed-project/../../../alcf_data_portal/templates/global/tabbed-project/search.html' %}
+{% load static index_template %}
+
+{% block headextras %}
+<script type="text/javascript" src="{% static 'js/../../../alcf_data_portal/static/js/general-preview.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}" />
+{% include 'exalearn/global/tabbed-project/components/custom-range-facets.html' %}
+{% include 'exalearn/global/tabbed-project/components/authenticated-search-preview.html' %}
+{% endblock %}
+
+{% block search_form_url %}{{ request.get_full_path }}{% endblock %}
+
+{% block user_not_logged_in_section %}
+{% endblock %}
+
+{% block search_facets %}
+<div id="sidebar" class="col-xs-12 col-sm-4 col-md-4">
+  <div id="filters">
+    <div id="facet-container">
+      <form id="facet-form">
+        <div>
+          <a class="btn btn-primary mb-1" href="{% url 'tp-project-search' globus_portal_framework.index project%}?q={{request.session.search.query}}">
+            Clear Filters
+          </a>
+        </div>
+        {% for facet in search.facets %}
+          {% if facet.filter_type == 'range' %}
+            {% include 'exalearn/global/tabbed-project/components/facets/range.html' %}
+          {% else %}
+            {% include 'exalearn/global/tabbed-project/components/facets/term.html' %}
+          {% endif %}
+        {% endfor %}
+        <div>
+          <button class="btn btn-primary" onclick="filterSearch();">Filter Results</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block search_pagination_link %}
+<a class="page-link" onclick="filterSearch({{page.number}});">{{page.number}}</a>
+{% endblock %}

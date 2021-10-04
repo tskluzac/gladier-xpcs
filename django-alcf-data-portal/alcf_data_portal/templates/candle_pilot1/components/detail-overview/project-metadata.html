@@ -1,0 +1,27 @@
+{% load humanize %}
+
+<table class="table table-striped table-bordered">
+  <tbody>
+
+  {% for result in search_results %}
+  <tr>
+    <td>{{result.name}}</td>
+    {% if result.type == 'int' %}
+    <td>{{result.value|intcomma}}</td>
+    {% elif result.type == 'filesize' %}
+    <td>{{result.value|filesizeformat}}</td>
+    {% else %}
+    <td>{{result.value}}</td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+  <tr>
+    <td>Source</td>
+    <td>
+      {% for src in ncipilot.source %}
+      {{src}} <br>
+      {% endfor %}
+    </td>
+  </tr>
+  </tbody>
+</table>

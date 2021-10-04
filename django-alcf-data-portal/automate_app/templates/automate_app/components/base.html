@@ -1,0 +1,81 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {# CSS files #}
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+
+    {# Custom Fonts #}
+    <script type="text/javascript" src="{% static 'js/fontawesome-all.min.js' %}"></script>
+
+    {# Django CSRF Protection #}
+    {% csrf_token %}
+
+    {# Extras #}
+    {%block headextras%}{%endblock%}
+
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script>
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+    </script>
+
+    <title>{%block title%}{%endblock%}</title>
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">
+          {% block navbar_brand %}
+          Globus Automate
+          {% endblock %}
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          {% block navbar_content %}
+          <ul class="navbar-nav mr-auto"></ul>
+          <ul class="navbar-nav my-lg-0">
+
+            {%if backends.backends and request.user.is_authenticated %}
+            <li>
+              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+            <li>
+              <a class="nav-link" href="/">{{request.user.username }}</a>
+            </li>
+            {% elif 'globus' in backends.backends and not request.user.is_authenticated %}
+            <li>
+              <a class="nav-link" href="{% url 'social:begin' 'globus' %}?next={{ request.get_full_path|urlencode }}">Login</a>
+            </li>
+            {% endif %}
+          </ul>
+          {% endblock %}
+        </div>
+    </nav>
+
+    {% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        {% block breadcrumb_items %}
+        <li class="breadcrumb-item"><a class="h5" href="{% url 'index-selection' %}">Automate</a></li>
+        {% endblock %}
+      </ol>
+    </nav>
+    {% endblock %}
+
+    <!-- Page body -->
+    {%block body%}
+    {%endblock%}
+
+  </body>
+</html>

@@ -1,0 +1,29 @@
+{%extends "global/tabbed-project/components/../../../../../../alcf_data_portal/templates/global/tabbed-project/components/detail-nav.html" %}
+
+
+{% block detail_nav_download_via_https_button %}
+<a
+        {% if https_url %}
+        class="btn btn-primary nav-link active" target="_blank" href="{{https_url}}"
+        {% else %}
+        class="btn btn-light nav-link disabled" href="#"
+        {% endif %}
+
+>
+  <i class="fas fa-cloud-download-alt"></i>
+  Download {{https_url_filename}}
+</a>
+{% endblock %}
+
+
+{% block extra_nav_items %}
+<li class="nav-item mx-1">
+  <a
+    class="btn btn-primary nav-link active" data-toggle="collapse" href="#reprocessForm"
+    target="_blank" role="button" aria-expanded="false" aria-controls="reprocessForm"
+  >
+    <i class="fas fa-link"></i>
+    Reprocess
+  </a>
+</li>
+{% endblock %}

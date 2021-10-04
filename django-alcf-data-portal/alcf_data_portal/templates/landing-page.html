@@ -1,0 +1,90 @@
+{%extends "base.html" %}
+{% load static %}
+
+{%block headextras%}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}" />
+  <script>
+    // This allows users to click anywhere on the cards to link to an index
+    function onclick_index_box(link_id) {
+      window.location = $(link_id).attr("href");
+    }
+  </script>
+{% endblock %}
+
+{% block breadcrumbs %}{# Disable breadcrumbs for landing page #}{% endblock %}
+{% block navbar_brand %}{# Disable on landing page #}{%endblock %}
+
+{% block body %}
+
+<!--<div class="my-5"></div>-->
+<div class="jumbotron jumbotron-header py-3">
+  <h1 class="display-4">ALCF Petrel Data</h1>
+  <p class="lead">{{portal_tagline}}</p>
+</div>
+<div class="container">
+  <div class="row equal">
+    {% for index_data in indexes|dictsort:"name" %}
+    {% if index_data.unlisted is not True %}
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 my-3" onclick="onclick_index_box('#{{index_data.uuid}}-link')">
+      <div class="text-center card card-body" style="height: 100%">
+
+        <!--Name and description-->
+        <div style="height: 100%">
+          <h3 class="card-title">{{index_data.name|default:index_data.index_name}}</h3>
+          <p class="card-text">{{index_data.description}}</p>
+        </div>
+
+
+        <!--Level of openness and link to the project-->
+        <div style="bottom: 0;">
+          <div class="row">
+            <div class="card col-sm-12" style="border: None">
+              {% if index_data.access == 'public' %}
+              <strong class="text-muted">
+                <i class="fas fa-users"></i><br>
+                <a data-toggle="tooltip" title data-original-title="Data in this project is both public and searchable">
+                  Public Data
+                </a>
+              </strong>
+              {% elif index_data.access == 'searchable' %}
+              <strong class="text-muted">
+                <i class="fas fa-search"></i><br>
+                <a data-toggle="tooltip" title data-original-title="Search is public, but data access requires permission">
+                  Search Only
+                </a>
+              </strong>
+              {% elif index_data.access == 'private' %}
+              <strong class="text-muted">
+                <i class="fas fa-lock"></i><br>
+                <a data-toggle="tooltip" title data-original-title="Search data is private, you will need permission to view search results and access data">
+                  Private
+                </a>
+              </strong>
+              {% endif %}
+            </div>
+          </div>
+          {% if index_data.index_name == 'candle-pilot1' %}
+            <a id="{{index_data.uuid}}-link" class="btn btn-primary" href="{% url 'cp1:landing_page' 'candle-pilot1' %}">Search This Project</a>
+          {% else %}
+            <a id="{{index_data.uuid}}-link" class="btn btn-primary" href="{% url 'search' index_data.index_name %}?{{index_data.default_query|default:'q=*'}}">Search This Project</a>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<div class="jumbotron jumbotron-footer mb-0 pb-0">
+  <h1 class="display-4">About Petrel</h1>
+  <hr class="my-4">
+  <h5>Using Petrel</h5>
+  <p class="my-0 py-0 ">Petrel is a pilot data service for researchers that provides a simple
+    and intuitive interface for self-managed project-based data sharing capability.
+    The service provides storage on disks owned and managed by ALCF. Globus Transfer
+    and sharing provide a mechanism to transfer data into the system</p>
+</div>
+
+{% endblock %}

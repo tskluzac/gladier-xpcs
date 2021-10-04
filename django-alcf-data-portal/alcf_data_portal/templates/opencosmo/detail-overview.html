@@ -1,0 +1,71 @@
+{%extends "opencosmo/detail-base.html" %}
+{% load static %}
+
+
+{%block headextras%}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/detail-base.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/detail-overview.css' %}" />
+{%endblock%}
+
+{% block detail_title %}
+<h3>{{project_title}}</h3>
+<h5 class="h5">{{remote_file_manifest.0.filename|default:'Result Details'}}</h5>
+{% endblock %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a class="h5" href="{% url 'index-selection' %}">{{globus_portal_framework.project_title}}</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'search' globus_portal_framework.index %}">{{globus_portal_framework.index_data.name}}</a></li>
+<li class="breadcrumb-item active"><a class="h5">{{remote_file_manifest.0.filename|default:'Result Details'}}</a></li>
+{% endblock %}
+
+{% block detail_body %}
+<div class="row">
+  <div class="col-md-12">
+    <br>
+    <h5 class="text-center mb-5 h5">GENERAL INFO</h5>
+    <div class="column-content">
+          {% for field_dict in all %}
+            {% for name, data in field_dict.items %}
+                {% if name ==  'simulation' or name == 'model' or name == 'redshift' or name == 'data_type' %}
+                <p style="margin-bottom: 10px;">
+                    <span style="margin-left:0px; font-size:15px; font-weight: 600;">{{name|capfirst}}:</span><br>
+                    {{data}}
+                </p>
+                {% endif %}
+            {% endfor %}
+          {% endfor %}
+    </div>
+
+  {% for metadata in fields.metadata %}
+  <div class="col-md-12">
+    <div class="card mt-4">
+      <div class="card-header">{{fields.title.value}}</div>
+      <div class="card-body">
+        <h3 class="text-center mb-5">Field Metadata</h3>
+        <h2>{{metadata.name}}</h2>
+        <table class="table table-responsive">
+          <thead>
+            <tr>
+                {%for col in metadata.field_titles %}
+                <th scope="col">{{col}}</th>
+                {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in metadata.field_values %}
+            <tr>
+              {% for item in row %}
+              <td>{{item}}</td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+{% endblock %}

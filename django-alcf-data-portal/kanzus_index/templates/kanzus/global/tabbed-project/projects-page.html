@@ -1,0 +1,64 @@
+{% extends 'global/tabbed-project/../../../../../alcf_data_portal/templates/global/tabbed-project/landing-page.html' %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col">
+    <h2 class="text-center mt-3 mb-5">{{project_title}}</h2>
+  </div>
+</div>
+
+
+<div class="row">
+
+
+  <div class="col-1"></div>
+  <div class="col-10">
+    <h4>SSX</h4>
+    <p>
+      Synchrotron serial crystallography (SSX) enables new science by allowing
+      studies of protein and enzyme dynamic processes. SSX requires rapid delivery
+      of small crystal samples 1-2 orders of magnitude faster than is possible
+      using traditional crystallography techniques, gathering data at rates that
+      are untenable for human management and necessitating the use of
+      High-Performance Computing resources for data processing and analysis.
+      SSX offers new opportunities to biologists: time resolution using light
+      activation for change in conformation or to change pH, very low X-ray
+      dose for sensitive samples, room temperature for more biologically
+      relevant environments, controlling radiation sensitivity for
+      metalloproteins, and helps discover redox potentials in active-sites.
+    </p>
+  </div>
+  <div class="col-1"></div>
+
+
+  <div class="col"></div>
+  <div class="col-10">
+
+    <h3>{{projects|length}} Projects Available</h3>
+
+    {% for project in projects|dictsort:'count' reversed %}
+    <div class="card mb-3">
+      <div class="card-header">
+          <h3>{{project.title}}</h3>
+      </div>
+      <div class="card-body">
+        <p class="lead"> {{project.description|default:"No description found"}}</p>
+        <p>This project has {{project.count}} results associated with it.</p>
+        {% if project.group == 'public' %}
+        <p>The records in this project are public.</p>
+        {% else %}
+        <p>This project is secured with the <a href="https://app.globus.org/groups/{{project.group}}/about">{{project.group_name}} Group</a>.</p>
+        {% endif %}
+        <a class="btn btn-primary" href="{% url 'tp-project-search' globus_portal_framework.index project.project%}">Search This Project</a>
+
+      </div>
+    </div>
+    {% endfor %}
+
+
+  </div>
+  <div class="col"></div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+<form action="{% url 'concierge-app:mdf-connect-submission' globus_portal_framework.index concierge_bag.search_collection.project %}" method="post">
+  <div class="form-group">
+  <input name="search_collection" value="{{concierge_bag.search_collection.id}}" hidden>
+  {% csrf_token %}
+  </div>
+  <div class="form-group">
+    <label for="title">Submission Title</label>
+    <input type="text" class="form-control" id="title" name="title" value="{{form.title.value|default:concierge_bag.search_collection.name}}" aria-describedby="mdfTitleHelpBlock">
+    <small id="mdfTitleHelpBlock" class="form-text text-muted">
+      A title for this Submission
+    </small>
+  </div>
+  <button type="submit" class="btn btn-primary">Publish to MDF</button>
+</form>

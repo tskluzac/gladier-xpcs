@@ -1,0 +1,52 @@
+{% comment %}
+DEPRECATED -- Use the template in global/tabbed-project/components/detail-nav
+
+{% endcomment %}
+
+<div class="card-header">
+  <nav class="navbar">
+    <a class="navbar-brand">{{title|default:'Result'}}</a>
+    <ul class="nav nav-pills justify-content-end">
+      <li class="nav-item mx-1">
+        <a
+                {% if globus_app_link %}
+                class="btn btn-primary nav-link active" target="_blank" href="{{globus_app_link}}"
+                {% else %}
+                class="btn btn-primary nav-link disabled" href="#"
+                {% endif %}
+        >
+          <i class="fas fa-exchange-alt"></i>
+          Transfer/Sync
+        </a>
+      </li>
+      <li class="nav-item mx-1">
+        <a
+                {% if https_url %}
+                class="btn btn-primary nav-link active" target="_blank" href="{{https_url}}"
+                {% else %}
+                class="btn btn-light nav-link disabled" href="#"
+                {% endif %}
+
+        >
+          <i class="fas fa-cloud-download-alt"></i>
+          Download via HTTPS
+        </a>
+      </li>
+      <li class="nav-item mx-1">
+        <a
+                {% if https_url %}
+                class="btn btn-primary nav-link active" data-toggle="collapse" href="#collapseExample"
+                target="_blank" role="button" aria-expanded="false" aria-controls="collapseExample"
+                {% else %}
+                class="btn btn-light nav-link disabled" href="#"
+                {% endif %}
+        >
+          <i class="fas fa-link"></i>
+          Get link
+        </a>
+      </li>
+      {% block extra_nav_items %}
+      {% endblock %}
+    </ul>
+  </nav>
+</div>

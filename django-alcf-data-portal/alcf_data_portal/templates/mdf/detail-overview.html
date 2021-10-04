@@ -1,0 +1,257 @@
+{%extends "mdf/detail-base.html" %}
+{% load static %}
+
+
+{%block headextras%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/detail-base.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/detail-overview.css' %}" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+
+<script type="text/javascript">
+  new ClipboardJS('.copy-btn');
+</script>
+
+<!--- Google Datasets info, for datasets. Empty fields are ignored. -->
+{% if all.0.mdf.resource_type == "dataset" %}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Dataset",
+    "name": "{{all.0.dc.titles.0.title}}",
+    "alternateName": "{{all.0.mdf.source_id}}",
+    "description": "{{all.0.dc.titles.0.title}} is a dataset in the Materials Data Facility. {{all.0.dc.descriptions.0.description|default:'No description was provided by the submitter.'}}",
+    "url": "https://petreldata.net/mdf/detail/{{all.0.mdf.source_id}}",
+    "identifier": "{{all.0.dc.identifier.identifier}}",
+    "keywords": [{
+        %
+        for sub in all .0.dc.subjects %
+      }
+      "{{sub.subject}}" {
+        %
+        if not forloop.last %
+      }, {
+        %
+        endif %
+      } {
+        %
+        endfor %
+      }
+    ],
+    "creator": [{
+      %
+      for creator in all .0.dc.creators %
+    } {
+      "@type": "Person",
+      "givenName": "{{creator.givenName}}",
+      "familyName": "{{creator.familyName}}",
+      "name": "{{creator.creatorName}}",
+      "affiliation": [{
+        %
+        for aff in creator.affiliations %
+      } {
+        "@type": "Organization",
+        "name": "{{aff}}"
+      } {
+        %
+        if not forloop.last %
+      }, {
+        %
+        endif %
+      } {
+        %
+        endfor %
+      }]
+    } {
+      %
+      if not forloop.last %
+    }, {
+      %
+      endif %
+    } {
+      %
+      endfor %
+    }],
+    "version": "{{all.0.dc.version}}",
+    "license": "{{all.0.dc.rightsList.0.rights}}",
+    {
+      %
+      if all .0.dc.publisher %
+    }
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{all.0.dc.publisher}}"
+    } {
+      %
+      endif %
+    }
+  }
+</script>
+{% endif %}
+
+{%endblock%}
+
+{% block breadcrumbs %}{% endblock %}
+
+
+
+{% block detail_body %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm mt-3">
+          <!---  Type Dataset  -->
+          {% if all.0.mdf.resource_type == "dataset" %}
+          {% if all.0.mdf.organizations %}
+          <div class="mt-3 mb-3">
+            <h4>Organizations</h4>
+            {{ all.0.mdf.organizations|join:', ' }}
+          </div>
+          {% endif %}
+
+
+          {% if all.0.dc.identifier.identifier %}
+          <div class="mt-3 mb-3">
+            <h4>DOI</h4>
+            {{ all.0.dc.identifier.identifier }}
+            <a class="btn btn-outline-secondary btn-sm ml-3"
+              href="https://search.datacite.org/works/{{all.0.dc.identifier.identifier}}">View on Datacite</a>
+          </div>
+          {% endif %}
+
+
+          {% if all.0.dc.publicationYear %}
+          <div class="mt-3 mb-3">
+            <h4>Year</h4> {{all.0.dc.publicationYear}}
+          </div>
+          {% endif %}
+
+          {% if all.0.mdf.source_name %}
+          <div class="mt-3 mb-3">
+            <h4 class="mt-2"> Source Name </h4>
+            <div id="source-name">{{all.0.mdf.source_name}}</div>
+          </div>
+          {% endif %}
+
+          {% if all.0.dc.subjects %}
+          <div class="mt-3 mb-3">
+            <h4 class="mt-2"> Tags </h4>
+            <div class="lead mt-2">{% for subject in all.0.dc.subjects %}
+              <a href="/mdf/?q=*&page=1&filter-match-any.mdf.resource_type=dataset&filter-match-any.dc.subjects.subject={{subject.subject}}"
+                class="badge badge-primary">
+                {{subject.subject}}
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+
+          <!---  END Type Dataset  -->
+
+          <!---  Type Record  -->
+          {% elif all.0.mdf.resource_type == "record" %}
+          <h3>{{all.0.mdf.source_id}}.{{all.0.mdf.scroll_id}}</h3>
+          {% if all.0.material.composition %}
+          <h5>Material</h5>
+          {{all.0.material.composition}}
+          {% endif %}
+          {% if all.0.files %}
+          <h5>Files</h5>
+          <ul>
+            {% for f_info in all.0.files %}
+            <li>
+              {{ f_info.filename }}
+              ({{ f_info.data_type|default:f_info.mime_type }})<br>
+              {% if f_info.url %}
+              <a class="btn btn-outline-primary" role="button" href="{{f_info.url}}"> Download </a>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+
+          <a class="btn btn-outline-primary" href="/mdf/detail/{{all.0.mdf.source_id}}/" role="button">See dataset</a>
+          {% else %}
+          <div class="jumbotron">
+            <h1>Entry not found</h1>
+            <a class="btn btn-primary" href="/mdf/?q=*&filter-match-any.mdf.resource_type=dataset" role="button">Return
+              to MDF Search</a>
+          </div>
+          {% endif %}
+          <!--- END Type Dataset  -->
+
+        </div>
+        <div class="col-sm mt-1">
+          <!-- <div class="mt-2 mb-2">
+            <h2> Get it with Forge </h2>
+            <code>from mdf_forge import Forge</code><br>
+            <code>mdf = Forge()</code><br>
+            {% if all.0.mdf.resource_type == "dataset" %}
+            <code>mdf.match_source_names("{{all.0.mdf.source_name}}")</code><br>
+            {% elif all.0.mdf.resource_type == "record" %}
+            <code>mdf.match_records("{{all.0.mdf.source_name}}", {{all.0.mdf.scroll_id}})</code><br>
+            {% endif %}
+            <code>mdf.search()</code>
+          </div>
+          <div class="mt-2 mb-2">
+            <h2> Forge installation </h2>
+            <code>pip install mdf_forge</code>
+          </div>
+          <div class="mt-2 mb-2">
+            <a class="btn btn-outline-primary" role="button" href="https://mdf-forge.readthedocs.io/en/master/">
+              Forge documentation
+            </a>
+          </div> -->
+          <div class="row mt-3">
+            <div class="col-sm">
+
+              <div class="mt-3 mb-3">
+
+
+                {% if all.0.dc.contributors %}
+                <h4 class="mt-3">Contact</h4>
+                {% for contact in all.0.dc.contributors %}
+                {{contact.contributorName}}
+                {% endfor %}
+                {% endif %}
+              </div>
+              {% if all.0.dc.descriptions %}
+              <div>
+                <h4 class="mt-3">Description</h4>
+                {{all.0.dc.descriptions.0.description}}
+              </div>
+              {% endif %}
+
+
+              <div class="mt-3 mv-3">
+                {% if all.0.data.link %}
+                <h1>
+                  <a class="btn btn-outline-primary active btn-lg" aria-pressed="true" href="{{all.0.data.link}}"> Get
+                    the Data </a>
+                </h1>
+                {% endif %}
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="row mt-5 mb-5">
+</div>
+<hr>
+<div class="row mt-5">
+  <div class="col-sm">
+    <iframe
+      src="https://thecollaboratory.ai/collaboratory/related-documents/?url=https://petreldata.alcf.anl.gov/mdf/detail/{{all.0.mdf.source_id}}/"
+      title="Get related documents from TheCollaboratory" width="100%" height="600px;"></iframe>
+  </div>
+</div>
+{% endblock %}

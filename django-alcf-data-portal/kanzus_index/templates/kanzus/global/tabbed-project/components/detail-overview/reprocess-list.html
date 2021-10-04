@@ -1,0 +1,14 @@
+{% if reprocessing_tasks %}
+<h3 class="my-3 h3 text-center"><a>Automate Reprocessing</a></h3>
+<table class="table table-striped table-bordered">
+  <tbody>
+  {% for rt in reprocessing_tasks %}
+  <tr>
+    <td>Started {{rt.action.date_created}}</td>
+    <td>{{rt.action.status|default:"Not Started"}}</td>
+    <td><a href="{% url 'kanzus-index:automate-action-detail' globus_portal_framework.index rt.action.id %}">Link</a></td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}

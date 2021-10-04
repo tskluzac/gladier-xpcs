@@ -1,0 +1,13 @@
+{% extends 'concierge-app/components/../../../../../concierge_app/templates/concierge-app/components/manifests-detail.html' %}
+
+{% block manifests_detail_no_manifests %}
+<div class="card">
+  <div class="card-header">
+    You have no subsets!
+  </div>
+  <div class="card-body">
+    <p class="card-text">Create some on the search page.</p>
+    <a href="{% url 'tp-landing-page' globus_portal_framework.index %}" class="btn btn-primary">Create some subsets!</a>
+  </div>
+</div>
+{% endblock %}

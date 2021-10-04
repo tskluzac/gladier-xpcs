@@ -1,0 +1,10 @@
+{% extends 'global/tabbed-project/../../../alcf_data_portal/templates/global/tabbed-project/search.html' %}
+
+{% block search_form_url %}{{ request.get_full_path }}{% endblock %}
+
+{% block user_not_logged_in_section %}
+{% endblock %}
+
+{% block search_pagination_link %}
+<a class="page-link" onclick="console.log({{page.number}}); customSearch({{page.number}});">{{page.number}}</a>
+{% endblock %}

@@ -1,0 +1,11 @@
+<a class="btn btn-outline-primary btn-block
+   {% with manifests_enabled=False %}
+   {% if not manifests_enabled or not request.user.is_authenticated %}
+   disabled
+   {% endif %}
+   {% endwith %}
+  " style="border-color: #708FCA; color: #708FCA"
+  href="{% url 'concierge-app:manifest-limiter-checkout' globus_portal_framework.index project %}?{{request.session.search.full_query|default:'q=*'}}">
+  <i class="fas fa-shopping-bag" style="font-size: 36px;"></i>
+  <span style="font-size: 22px" class="pl-2">Create Subset!</span>
+</a>

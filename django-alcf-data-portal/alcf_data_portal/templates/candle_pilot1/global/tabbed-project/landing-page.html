@@ -1,0 +1,23 @@
+{%extends "global/tabbed-project/../../../global/tabbed-project/landing-page.html" %}
+
+{% block landing_page_about %}
+  <p class="lead font-weight-bolder">
+    Predictive models for cancer therapy can one day support the treatment choices
+    a physician and patient make toward achieving the best possible clinical outcome.
+    A team of collaborators from the DOE and NCI aims to accelerate this by using
+    advanced computation to rapidly develop, test, and validate predictive pre-clinical
+    models for precision oncology. They used observational data from experiments with
+    cancer cell lines and animal models to do statistical analysis, deep learning,
+    modeling, and simulation on Theta. This project has developed a suite of machine
+    learning models for both single drugs and drug combinations, and became the first
+    group to apply deep residual networks (DRN) to predict drug response both for single
+    drugs and for multiple drugs.
+  </p>
+{% endblock %}
+
+{% block landing_page_data_access %}
+  <p class="lead font-weight-bolder">Search results are limited to members of the NCI Pilot Group.</p>
+  <a class="btn btn-primary" target="_blank" href="https://app.globus.org/groups/d99b3400-33e7-11e9-8857-0af4690c7c7e/about">
+    Request Access to NCI Pilot Group
+  </a>
+{% endblock %}

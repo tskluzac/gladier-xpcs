@@ -1,0 +1,64 @@
+{% load index_template %}
+<div class="accordion" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125); border-radius: calc(0.25rem - 1px);" id="accordion-main">
+{% for concierge_manifest in concierge_manifests %}
+<div class="card manifest-{{concierge_manifest.id}}">
+  {% block manifests_detail_nav_header %}
+  <div class="card-header" id="headingOne">
+    {% index_template 'concierge-app/components/manifests-detail-nav-header.html' as manifests_detail_nav_header_template %}
+    {% include manifests_detail_nav_header_template %}
+  </div>
+  {% endblock %}
+  {% block manifests_detail_description %}
+  <div id="collapse-main-description-{{concierge_manifest.id}}" class="collapse" aria-labelledby="heading-main-description-{{concierge_manifest.id}}" data-parent="#accordion-main">
+    <div class="card-body">
+      {% index_template 'concierge-app/components/manifests-detail-description.html' as manifests_detail_description_template %}
+      {% include manifests_detail_description_template %}
+    </div>
+  </div>
+  {% endblock %}
+  {% block manifests_detail_transfer %}
+  <div id="collapse-main-transfer-{{concierge_manifest.id}}"
+       class="collapse
+       {% if select_manifest == concierge_manifest.id %}
+       show
+       {% endif %}"
+       aria-labelledby="heading-main-description-{{concierge_manifest.id}}" data-parent="#accordion-main">
+    <div class="card-body">
+      {% index_template 'concierge-app/components/manifests-detail-transfer-form.html' as manifests_detail_transfer_form %}
+      {% include manifests_detail_transfer_form %}
+    </div>
+  </div>
+  {% endblock %}
+  {% block manifests_detail_download %}
+  <div id="collapse-main-download-{{concierge_manifest.id}}" class="collapse" aria-labelledby="heading-main-description-{{concierge_manifest.id}}" data-parent="#accordion-main">
+      {% index_template 'concierge-app/components/manifests-detail-download.html' as manifests_detail_download %}
+      {% include manifests_detail_download %}
+  </div>
+  {% endblock %}
+  {% block manifests_detail_delete %}
+  <div id="collapse-main-delete-{{concierge_manifest.id}}" class="collapse" aria-labelledby="heading-main-description-{{concierge_manifest.id}}" data-parent="#accordion-main">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-10"></div>
+        <div class="col-md-2">
+          <button class="btn btn-danger nav-link active" onclick="deleteManifest({{concierge_manifest.id}});">Confirm Delete?</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+</div>
+{% empty %}
+{% block manifests_detail_no_manifests %}
+<div class="card">
+  <div class="card-header">
+    You have no manifests!
+  </div>
+  <div class="card-body">
+    <p class="card-text">Create some on the search page.</p>
+    <a href="{% url 'tp-projects-page' globus_portal_framework.index %}" class="btn btn-primary">Make some manifests!</a>
+  </div>
+</div>
+{% endblock %}
+{% endfor %}
+</div>

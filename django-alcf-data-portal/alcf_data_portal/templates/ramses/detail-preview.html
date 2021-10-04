@@ -1,0 +1,8 @@
+{% extends 'detail-preview.html' %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a class="h5" href="{% url 'index-selection' %}">{{globus_portal_framework.project_title}}</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'search' globus_portal_framework.index %}">{{globus_portal_framework.index_data.name}}</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'detail' globus_portal_framework.index subject %}">{{title}}</a></li>
+<li class="breadcrumb-item"><a class="h5">Preview</a></li>
+{% endblock %}

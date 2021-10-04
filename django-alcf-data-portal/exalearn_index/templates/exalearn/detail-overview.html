@@ -1,0 +1,56 @@
+{% extends 'global/tabbed-project/../../../alcf_data_portal/templates/global/tabbed-project/detail-overview.html' %}
+{% load humanize static %}
+
+{% block headextras %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/detail-base.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/detail-overview.css' %}" />
+<script src="{% static 'js/../../../alcf_data_portal/static/js/copy-to-clipboard.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/../../../alcf_data_portal/static/js/general-preview.js' %}"></script>
+{% include 'exalearn/global/tabbed-project/components/authenticated-detail-preview.html' %}
+{% endblock %}
+
+{% block detail_body_preview %}
+
+{% if transfer %}
+<div class="container">
+  {% include 'exalearn/global/tabbed-project/components/transfer-detail-info.html' %}
+</div>
+{% endif %}
+
+
+<h3 class="text-center h3">Preview</h3>
+<div class="row mt-5">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    {% block detail_body_preview_image %}
+      {% include "exalearn/components/detail-preview-image-carousel.html" %}
+    {% endblock %}
+  </div>
+  <div class="col-md-2"></div>
+</div>
+{% endblock %}
+
+
+{% block custom_index_metadata %}
+
+{% for search_result_item in detail_results %}
+<tr>
+  <td>{{search_result_item.name}}</td>
+  {% if search_result_item.type == 'int' %}
+  <td>{{search_result_item.value|intcomma}}</td>
+  {% elif search_result_item.type == 'file_size' %}
+  <td>{{search_result_item.value|filesizeformat}}</td>
+  {% else %}
+  <td>{{search_result_item.value}}</td>
+  {% endif %}
+</tr>
+{% endfor %}
+
+{% if file_size %}
+<tr>
+  <td>Size</td>
+  <td><p>{{file_size|filesizeformat}}</p></td>
+</tr>
+{% endif %}
+{% endblock %}

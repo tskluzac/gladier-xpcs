@@ -1,0 +1,29 @@
+{# DEPRECATED -- Use global/tabbed-project/components/search-facets.html instead! #}
+{% for facet in search.facets %}
+<div class="card mb-3">
+  <div class="card-header">
+    {{facet.name}}
+  </div>
+  <div class="card-body my-0 py-0">
+    <ul class="list-group list-group-flush">
+    {% for field in facet.buckets %}
+      <li class="list-group-item py-1">
+        <input type="checkbox" class="facet-checkbox mr-1"
+               name="{{field.search_filter_query_key}}"
+               value="{{field.value}}"
+               {# Reset page to 1 if user facets on a paginated search #}
+               onchange="customSearch(1);" autocomplete="off"
+               {% if field.checked %}
+               checked
+               {% endif %}
+        >
+        {% block facet_value %}
+        {{field.value|default:'No Value'}}
+        {% endblock %}
+      <span class="badge badge-secondary" style="float: right">{{field.count}}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endfor %}

@@ -1,0 +1,41 @@
+{%extends "concierge-app/tabbed-project/../../../../../concierge_app/templates/concierge-app/tabbed-project/manifests.html" %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col">
+    <h2 class="text-center">{{project_title}}</h2>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <h1 class="display-4">Custom Subsets</h1>
+  <p class="lead">
+    Below is a list of your Custom Subsets, each one tracking data associated with ExaLearn search results.
+  </p>
+  <hr class="my-4">
+  <p>You can create Subsets from the search page by filtering results and 'checking out' a subset of those
+    results. After that, you can get the data in your subset a couple
+  of different ways:</p>
+  <ul>
+    <li>Download a <a target="blank" href="https://pypi.org/project/bdbag/">BDBag</a>, a small zip file which tracks file references and metadata.</li>
+    <li>Transfer the data directly to a remote location using Globus.</li>
+  </ul>
+</div>
+
+{% include 'components/messages.html' %}
+
+<h1 class="text-center my-3">My Custom Subsets</h1>
+
+<div class="container">
+  <div class="row mb-5">
+    <div class="col-3">
+      {% include 'exalearn/concierge-app/components/manifests-transfer-detail.html' %}
+    </div>
+    <div class="col-9">
+      {% include 'exalearn/concierge-app/components/manifests-detail.html' %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

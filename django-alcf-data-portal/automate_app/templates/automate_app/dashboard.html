@@ -1,0 +1,29 @@
+{% extends 'automate_app/components/components/base.html' %}
+
+{% block body %}
+<div class="container">
+
+  {%block detail_messages %}
+  <div class="container my-3">
+    {% include "automate_app/components/components/messages.html" %}
+  </div>
+  {% endblock %}
+
+  <div class="row">
+    <div class="col-4">
+      {% with flows as object_list %}
+      {% include 'automate_app/components/flow/components/flow/list.html' %}
+      {% endwith %}
+    </div>
+
+    <div class="col-8">
+      {% block action_list %}
+      {% with actions as object_list %}
+      {% include 'automate_app/components/action/components/action/list.html' %}
+      {% endwith %}
+      {% endblock %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+<div class="card">
+  <div class="card-header">
+    Preview Images
+  </div>
+  {% if is_inverse_preview %}
+  {% for image_data in detail_preview_images %}
+  {% with authenticated_preview_image=image_data %}
+  {% include 'exalearn/components/authenticated-preview.html' %}
+  {% endwith %}
+  {% endfor %}
+  {% else %}
+  <div class="card-img-top">
+    <div id="detailPreviewCarousel" class="carousel slide" data-ride="carousel">
+      <ol class="carousel-indicators">
+        {% for image_data in detail_preview_images %}
+        <li data-target="#detailPreviewCarousel" data-slide-to="{{forloop.counter0}}"
+        {% if forloop.counter0 == 0 %}
+        class="active"
+        {% endif %}
+        ></li>
+        {% endfor %}
+      </ol>
+      <div class="carousel-inner">
+        {% for image_data in detail_preview_images %}
+        <div class="carousel-item
+          {% if forloop.counter0 == 0 %}
+          active
+          {% endif %}
+        ">
+          <img class="d-block w-100" src="{{image_data.url}}" alt="{{image_data.filename}}">
+          <div class="carousel-caption d-none d-md-block">
+            <h5 style="color: white">{{image_data.caption}}</h5>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <a class="carousel-control-prev" href="#detailPreviewCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#detailPreviewCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+    <div class="card-body">
+      <p class="card-text">{{project_metadata.preview_info}}</p>
+    </div>
+  </div>
+  {% endif %}
+</div>

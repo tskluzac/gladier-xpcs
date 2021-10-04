@@ -1,0 +1,35 @@
+<h2>Search Results</h2>
+<div id="search-result" class="search-result">
+  {% for result in search.search_results %}
+  <div class="result-item">
+
+    <h3 class="search-title mt-3">
+      <a href="{% url 'globus-tutorial:detail' globus_portal_framework.index index_uuid result.subject %}" title="{{result.title|default:'Result'}}">{{result.title|default:'Result'}}</a>
+    </h3>
+
+    <div class="result-fields">
+      <table class="table table-sm borderless">
+        <tbody>
+        <tr>
+          {% for search_result in result.search_results %}
+          <th>{{search_result.name}}</th>
+          {% endfor %}
+        </tr>
+        <tr>
+          {% for search_result in result.search_results %}
+          <td>{{search_result.value}}</td>
+          {% endfor %}
+        </tr>
+        </tbody>
+      </table>
+      {% if result.globus_app_link %}
+      <a href="{{result.globus_app_link}}" target="_blank">View in Globus Webapp</a>
+      {% else %}
+      <p>No file on record</p>
+      {% endif %}
+      <br>
+    </div>
+
+  </div>
+  {% endfor %}
+</div>

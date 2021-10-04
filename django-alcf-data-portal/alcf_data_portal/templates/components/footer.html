@@ -1,0 +1,37 @@
+{% load static %}
+{% block footer %}
+<footer id="sticky-footer" class="pb-0 mb-0">
+  <!--<div style="background-color: #e9ecef;">-->
+  <div class="">
+    <div class="container text-center">
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-lg-2 my-4 mx-4">
+          <a href="http://www.anl.gov/" target="_blank">
+            <img src="{% static 'images/../../static/images/ANLWhiteText.png' %}"
+                 height="100px" class="img-responsive" />
+          </a>
+        </div>
+        <div class="col"></div>
+        <div class="col-lg-2 my-4 mx-4">
+          <a href="http://www.globus.org/" target="_blank">
+            <img src="{% static 'images/../../static/images/Globus_White_2013_square.png' %}"
+                 height="100px" class="img-responsive" />
+          </a>
+        </div>
+        <div class="col"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-light mb-0">
+    <div class="container text-center">
+      <p class="my-0 py-0">This site relies on <a style="text-decoration: underline; color: unset;" href="http://petrel.alcf.anl.gov/" target="_blank">
+        Petrel</a>, a resource of the <a style="text-decoration: underline; color: unset;" href="https://www.alcf.anl.gov" target="_blank">
+        Argonne Leadership Computing Facility</a>, which is a DOE Office of
+        Science User Facility supported under Contract DE-AC02-06CH11357.</p>
+      <p>{% now "Y" %} University of Chicago &ndash; Globus</p>
+    </div>
+  </div>
+</footer>
+{% endblock %}

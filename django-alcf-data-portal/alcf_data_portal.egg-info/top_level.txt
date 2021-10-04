@@ -1,0 +1,9 @@
+alcf_data_portal
+automate_app
+concierge_app
+exalearn_index
+globus_tutorial_index
+hedm_sec1_index
+kanzus_index
+xrf_2id_index
+xsd_img_index

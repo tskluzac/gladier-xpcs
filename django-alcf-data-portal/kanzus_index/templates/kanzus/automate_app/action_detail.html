@@ -1,0 +1,27 @@
+{% extends 'global/tabbed-project/automate_app/../../../../alcf_data_portal/templates/global/tabbed-project/automate_app/action_detail.html' %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a class="h5" href="/">Globus Portal Framework</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'kanzus-index:automate-dashboard' globus_portal_framework.index %}">XPCS Automate</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'kanzus-index:automate-action-detail' globus_portal_framework.index object.id %}">{{object.flow.title}}</a></li>
+{% endblock %}
+
+{% block detail_back_url %}
+<a href="{% url 'kanzus-index:automate-dashboard' globus_portal_framework.index %}">Back to Dashboard</a>
+{% endblock %}
+
+{% block title %}
+<h3 class="text-center mb-3 h3">{{object.flow.title}} -- {{reprocessing_task.display_name}}</h3>
+{% endblock %}
+
+{% block action_table_detail %}
+{{block.super}}
+<tr>
+  <td>Search Record</td>
+  {% if reprocessing_task.subject and reprocessing_task.project %}
+  <td><a href="{% url 'kanzus-index:tp-project-detail' globus_portal_framework.index reprocessing_task.project reprocessing_task.subject %}">{{reprocessing_task.display_name}}</a></td>
+  {% else %}
+  <td>No Search Record Found</td>
+  {% endif %}
+</tr>
+{% endblock %}

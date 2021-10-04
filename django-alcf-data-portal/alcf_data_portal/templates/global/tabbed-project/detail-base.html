@@ -1,0 +1,59 @@
+{%extends "global/tabbed-project/base.html" %}
+{% load static humanize %}
+{% load index_template %}
+
+{%block headextras%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/detail-base.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/detail-overview.css' %}" />
+<script src="{% static 'js/../../../static/js/copy-to-clipboard.js' %}"></script>
+{%endblock%}
+
+{% block body %}
+
+{% block detail_back_to_search %}
+{% if request.session.search %}
+<div class="container mt-3">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-info" role="alert">
+        {% if project %}
+        <a href="{% url 'tp-project-search' request.session.search.index project %}?{{request.session.search.full_query}}">Back to Search</a>
+        {% else %}
+        <a href="{% url 'tp-search' request.session.search.index %}?{{request.session.search.full_query}}">Back to Search</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{%block detail_messages %}
+<div class="container my-3">
+  {% index_template "components/messages.html" as it_messages %}
+  {% include it_messages %}
+</div>
+{%endblock%}
+
+{% block body_content %}
+<div class="container my-3">
+  <div class="card">
+    {% block detail_nav %}
+    {% index_template 'global/tabbed-project/components/detail-nav.html' as it_detail_nav %}
+    {% include it_detail_nav %}
+    {% endblock %}
+    <div class="card-body">
+      {% block copy_to_clipboard %}
+      {% include 'global/components/../components/copy-to-clipboard.html' %}
+      {% endblock %}
+      <div class="container">
+        {%block detail_body %}
+        {%endblock%}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% endblock %}

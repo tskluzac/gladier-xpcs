@@ -1,0 +1,129 @@
+{%extends "detail-base.html" %}
+{% load static %}
+
+
+{%block headextras%}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/detail-base.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/detail-overview.css' %}" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  new ClipboardJS('.copy-btn');
+
+  </script>
+
+{%endblock%}
+
+{% block detail_title %}
+<h2>{{all.0.datacite.titles.0.title}}</h2>
+<div class="h6 text-muted" id="servable-name">{{all.0.dlhub.shorthand_name}} 
+<div class="btn btn-outline-secondary copy-btn btn-sm" data-clipboard-target="#servable-name">Copy <i class="fa fa-clipboard"></i></div>
+</div>
+
+{% endblock %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a class="h5" href="{% url 'index-selection' %}">{{globus_portal_framework.project_title}}</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'search' globus_portal_framework.index %}">{{globus_portal_framework.index_data.name}}</a></li>
+<li class="breadcrumb-item active"><a class="h5">{{title}}</a></li>
+{% endblock %}
+
+{% block detail_body %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                <!--- \\\\\\\Post-->
+                <div class="card gedf-card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="ml-2 mb-0">
+                                    <div class="h6 text-muted">
+                                     {% for creator in all.0.datacite.creators %}
+                                      {{creator.givenName}} {{creator.familyName}}{% if not forloop.last %}; {% endif %}
+                                      {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                               
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        {% if all.0.datacite.descriptions.0.description %}
+                        <p class="card-text">
+                            {{all.0.datacite.descriptions.0.description}}
+                        </p>
+                        {% endif %}
+                        <div class="badge badge-primary">{{all.0.servable.type}}</div>
+                        <div class="badge badge-primary">{{all.0.servable.model_type}}</div>
+                        <div>{% for domain in all.0.dlhub.domains %}
+                          <span class="badge badge-secondary">
+                            {{domain}}
+                          </span>
+                        {% endfor %}</div>
+
+                        <h4 class="mt-3"> Input </h4>
+                        {{all.0.servable.methods.run.input.description}}
+                        <div> Type: {{all.0.servable.methods.run.input.type}}</div>
+                        {% if all.0.servable.methods.run.input.shape %}
+                        <div> Shape: {{all.0.servable.methods.run.input.shape}}</div>
+                        {% endif %}
+                        <div>
+                        <div class="list-group">
+                        {% for elem in all.0.servable.methods.run.input.element_types %}
+                        <div class="d-flex w-100 justify-content-between">
+                          <h6 class="mb-1">{{elem.description}} </h6>
+                          
+                        </div><div>Type: ({{elem.type}}) {{elem.item_type.type}}</div></small>
+                        {% endfor %}
+                        </div>
+
+                    
+
+                         <h4 class="mt-3"> Output </h4>
+                          {{all.0.servable.methods.run.output.description}}
+                          <div> Type: {{all.0.servable.methods.run.output.type}} </div>
+                          {% if all.0.servable.methods.run.output.shape %}
+                          <div> Shape: {{all.0.servable.methods.run.output.shape}} </div>
+                          {% endif %}
+                        </div>
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                       
+                    </div>
+                </div>
+                <!-- Post /////-->
+                </div>
+               
+                <div class="col-sm-6">
+                    <h3 class="mt-3"> Run with DLHub SDK </h3>
+                    <code>from dlhub_sdk.client import DLHubClient</code><br>
+                    <code>X = get_my_data() #replace this</code><br>
+                    <code>dl = DLHubClient()</code><br>
+                    <code>dl.run('{{all.0.dlhub.shorthand_name}}', X)</code>
+
+                    <h3 class="mt-3" > Get More Info with DLHub SDK </h3>
+                    <code>from dlhub_sdk.client import DLHubClient</code><br>
+                    <code>dl = DLHubClient()</code><br>
+                    <code>dl.describe_servable('{{all.0.dlhub.shorthand_name}}')</code>
+
+                    <h3 class="mt-3"> DLHub SDK Installation </h3>
+                    <code>pip install dlhub_sdk</code>
+                    <br><br>
+                    <a class="btn btn-outline-primary" role="button" href="https://github.com/DLHub-Argonne/dlhub_sdk">
+                      DLHub SDK documentation
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

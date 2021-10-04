@@ -1,0 +1,25 @@
+{%extends "global/tabbed-project/../../../../../alcf_data_portal/templates/global/tabbed-project/landing-page.html" %}
+
+{% block landing_page_about %}
+  <p class="lead font-weight-bolder">
+   The IMG group designs, supports, and operates state-of-the-art x-ray
+    instrumentation and scientific software for 2-D and 3-D full-field imaging.
+    Development efforts focus on optimizing for speed, sensitivity, and resolution
+    by taking full advantage of the unique properties of the APS source, such as
+    the time structure, the high energy, and the low emittance. This allows for
+    multi-scale imaging of real materials—in real time—and under real conditions.
+  </p>
+{% endblock %}
+
+{% block landing_page_data_access %}
+  <p class="lead font-weight-bolder">Search results are pubic</p>
+  {% if '368beb47-c9c5-11e9-b455-0efb3ba9a670' in user_groups %}
+  <!--<a class="btn btn-success" target="_blank" href="https://app.globus.org/groups/368beb47-c9c5-11e9-b455-0efb3ba9a670/about">-->
+    <!--You are a member of the XPCS Analysis Developers Group-->
+  <!--</a>-->
+  {% else %}
+  {% endif %}
+  <a class="btn btn-primary" href="{% url 'xsd-img:search' globus_portal_framework.index %}">
+    Search This Project
+  </a>
+{% endblock %}

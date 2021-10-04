@@ -1,0 +1,75 @@
+{%extends "global/tabbed-project/detail-base.html" %}
+{% load static humanize index_template %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a class="h5" href="{% url 'index-selection' %}">{{globus_portal_framework.project_title}}</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'tp-landing-page' index=globus_portal_framework.index %}">{{globus_portal_framework.index_data.name}}</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'tp-project-search' index=globus_portal_framework.index project=project %}">{{project_info.title}} Search</a></li>
+<li class="breadcrumb-item active"><a class="h5">{{title|default:'Search Result'}}</a></li>
+{% endblock %}
+
+{% block detail_body %}
+
+{% block detail_body_preview %}
+<h3 class="text-center h3">Preview</h3>
+<div class="row my-5">
+  {% for detail_preview_png in detail_preview_pngs %}
+    <div class="col-md-6">
+    {% block detail_body_preview_image %}
+    {% with preview_image=detail_preview_png.url preview_image_text=detail_preview_png.name %}
+    <div class="card mb-3">
+      <img class="card-img-top" src="{{preview_image}}" alt="{{preview_image_text}}">
+      <div class="card-body">
+        <h5 class="card-title">{{preview_image_text}}</h5>
+      </div>
+    </div>
+    {% endwith %}
+    {% endblock %}
+    </div>
+  {% empty %}
+  <div class="col-md-5"></div>
+  <div class="col-md-2">
+      <center>No preview images available for the dataset</center>
+  </div>
+  <div class="col-md-5"></div>
+  {% endfor %}
+</div>
+{% endblock %}
+
+
+<h3 class="text-center mb-3 h3">Metadata</h3>
+<div class="row">
+
+  <div class="col-md-1"></div>
+  <div class="col-md-5">
+  {% index_template "global/tabbed-project/components/detail-overview/dc-metadata.html" as dc_metadata %}
+  {% include dc_metadata %}
+  </div>
+
+  <div class="col-md-5">
+    <table class="table table-striped table-bordered">
+      {% block custom_index_metadata %}
+      <tbody>
+
+      {% for search_result_item in search_results %}
+      <tr>
+        <td>{{search_result_item.name}}</td>
+        {% if search_result_item.type == 'int' %}
+        <td>{{search_result_item.value|intcomma}}</td>
+        {% else %}
+        <td>{{search_result_item.value}}</td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+      {% endblock %}
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-1"></div>
+
+</div>
+{% endblock %}
+
+{% block detail_footer %}
+
+{% endblock %}

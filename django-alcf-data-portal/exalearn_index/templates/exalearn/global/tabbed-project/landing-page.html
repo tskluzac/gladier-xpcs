@@ -1,0 +1,114 @@
+{%extends "global/tabbed-project/../../../../../alcf_data_portal/templates/global/tabbed-project/base.html" %}
+{% load static is_active index_template %}
+
+{%block headextras%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}" />
+{% endblock %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a class="h5" href="{% url 'index-selection' %}">{{globus_portal_framework.project_title}}</a></li>
+<li class="breadcrumb-item active"><a class="h5">{{globus_portal_framework.index_data.name}}</a></li>
+{% endblock %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col">
+    <h2 class="text-center mt-3 mb-5">{{project_title}}</h2>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col"></div>
+  <div class="col-10">
+  {% index_template 'components/messages.html' as it_mess %}
+  {% include it_mess %}
+  </div>
+  <div class="col"></div>
+</div>
+
+<div class="row mb-5">
+  <div class="col"></div>
+  <div class="col-10">
+
+    <div>
+      <h1>About</h1>
+      <p class="lead font-weight-bolder">
+
+        <a href="https://www.exascaleproject.org/ecp-announces-new-co-design-center-to-focus-on-exascale-machine-learning-technologies/"
+        >ExaLearn</a> is a US Department of Energy (DOE)
+        <a href="https://www.exascaleproject.org/">Exascale Computing Project</a> (ECP)
+        center developing and applying machine learning methods in high-performance
+        computing environments. This repository hosts collections of training and
+        test data ("Projects") relevant to ExaLearn goals. See below for information
+        about available Projects.
+
+      </p>
+
+      <p class="lead font-weight-bolder">
+        To work with a specific Project, select "Search &ltproject-name&gt." You can
+        then browse and search the Project's contents, and download individual data
+        elements. If you log in, you can also use the "BagIt" button to aggregate a
+        data subset defined via search for download or transfer.
+      </p>
+
+
+    </div>
+    <div>
+      <div class="mb-4">
+        <h1>Projects</h1>
+      </div>
+
+      {% for project in projects|dictsort:'count' reversed %}
+      <div class="card mb-3">
+        <div class="card-header">
+            <h3>{{project.title}} -- {{project.count}} Results</h3>
+        </div>
+
+        <div class="card-body">
+          {% if project.project == 'cosmoflow' %}
+            <p class="lead font-weight-bolder">
+              This project contains data from several cosmological N-body dark matter simulations,
+              which are stored here both in their raw form as NumPy arrays, as well as assembled into
+              TFRecord files which can be read by TensorFlow (these TFRecords contain data-label pairs
+              which can be used for supervised learning problems). The simulations are run using
+              <a href="https://www-n.oca.eu/ohahn/MUSIC/">MUSIC</a> to
+              generate the initial conditions, and are evolved with
+              <a href="https://bitbucket.org/tassev/pycola/">pyCOLA</a>, a multithreaded
+              Python/Cython N-body code. The output of these simulations is then binned into a 3D
+              histogram of particle counts in a cube of a fixed size, which is then also sliced up
+              into sub-volumes and 2D sheets to get data samples which are more manageable in size.
+              The total size of each dataset stored here is thus several times larger since the data has
+              been made available in multiple formats for user convenience. More details on the process of
+              generating these datasets can be found in the
+              <a href="https://arxiv.org/pdf/1808.04728.pdf">CosmoFlow paper</a>.
+            </p>
+            <p class="lead font-weight-bolder">
+              The governing cosmological parameters of interest in each dataset are varied uniformly around
+              a mean value with some pre-defined spread. For example, in the cosmoUniverse_2019_02_4parE
+              dataset, the Hubble constant H_0 is varied around H_0 = 70 with a 30% spread. For the purpose
+              of machine learning, it is convenient to have normalized data/labels, so the labels corresponding
+              to these cosmological parameters (for the data in the TFRecords) are stored as normalized unit
+              values within the range [-1, 1]. The mapping from these unit labels to the actual physical
+              parameter values is given by P = m + U*h, where P is the actual physical parameter value, m is
+              the mean physical parameter value being varied around, U is the unit parameter value, and h is
+              the half-width of the spread.
+            </p>
+          {% elif project.project == 'tomogan' %}
+          <p class="lead font-weight-bolder">This project contains data from the TomoGan project.</p>
+          {% endif %}
+          {% if project.group == 'public' %}
+          <p>The records in this project are public.</p>
+          {% else %}
+          <p>This project is secured with the <a href="https://app.globus.org/groups/{{project.group}}/about">{{project.group_name}} Group</a>.</p>
+          {% endif %}
+          <a class="btn btn-primary" href="{% url 'tp-project-search' globus_portal_framework.index project.project%}">Search {{project.title}}</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col"></div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% load static %}
+
+<h2>Search Results</h2>
+<div id="search-result" class="search-result">
+    {% for result in search.search_results %}
+    <div class="result-item card mt-2 mb-2 p-3">
+        {% if result.mdf.resource_type == 'dataset' %}
+            <h3 class="card-title"><a href="{% url 'detail' globus_portal_framework.index result.subject %}">{{ result.dc.titles.0.title|default:result.mdf.source_id }}</a>
+</h3>
+         <div class="h6 text-muted card-subtitle">
+                {% for creator in result.dc.creators %}
+                {{creator.creatorName}}{% if not forloop.last %}; {% endif %}
+                {% endfor %}
+                </div>
+            <div class="result-fields card-text lead">
+                {% if result.mdf.organizations %}
+                    Organizations:
+                    {% for org in result.mdf.organizations %}
+                        {{org}}
+                    {% endfor %}<br>
+                {% endif %}
+               
+                {% if result.dc.identifier.identifier %}
+                    <div>DOI: {{ result.dc.identifier.identifier }}</div>
+                {% endif %}
+                {% if result.dc.publicationYear %}
+                    <div>Year: {{result.dc.publicationYear}}</div>
+                {% endif %}
+                <div>
+                <div class="btn-group" role="group" aria-label="Data Access">
+                    {% if result.data.link %}
+                        <a class="btn btn-outline-primary" role="button" href="{{result.data.link}}"> Globus </a>
+                    {% endif %}
+                    {% if result.services.citrine %}
+                        <a class="btn btn-outline-primary" role="button" href="{{result.services.citrine}}"> Citrination </a>
+                    {% endif %}
+                </div>
+                </div>
+            </div>
+        {% elif result.mdf.resource_type == 'record' %}
+            <h3 class="search-title mt-3">
+                <a href="{% url 'detail' globus_portal_framework.index result.subject %}" title="{{ result.mdf.source_id }}.{{ result.mdf.scroll_id }}">{{ result.mdf.source_id }}.{{ result.mdf.scroll_id }}</a>
+            </h3>
+            <div class="result-fields">
+                {% if result.material.composition %}
+                    Material: {{result.material.composition}}
+                {% endif %}
+                <br>
+                {% if result.files %}
+                    File types:
+                    {{ result.files.0.data_type|default:result.files.0.mime_type }}
+                    {% for f_info in result.files %}
+                        {% if f_info != result.files.0 %}
+                            {{f_info.data_type|default:f_info.mime_type}}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            <br>
+            </div>
+        {% else %}
+            <h3 class="search-title mt-3">
+                <a href="{% url 'detail' globus_portal_framework.index result.subject %}" title="Unknown Entry">Unknown Entry</a>
+            </h3>
+        {% endif %}
+
+    </div>
+    {% endfor %}
+</div>

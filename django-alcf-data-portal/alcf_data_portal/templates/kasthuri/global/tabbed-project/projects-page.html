@@ -1,0 +1,56 @@
+{%extends "base.html" %}
+{% load static %}
+
+{%block headextras%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}" />
+{% endblock %}
+
+
+{% block body %}
+
+<div class="row">
+  <div class="col">
+    <h2 class="text-center mt-3 mb-5">{{project_title}}</h2>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col"></div>
+  <div class="col-10">
+
+    <div>
+      <h1>About</h1>
+      <p class="font-weight-normal">
+        The Kasthuri lab is pioneering new techniques for large volume reconstructions
+        of the fine structure of the nervous system – ‘connectomics’.
+        These developments include: large volume automated electron microscopy for
+        mapping neuronal connections, synchrotron source X-ray microscopy to map
+        the cellular composition of entire brains; improving sample preparation in
+        order to increase the efficiency of automated algorithmic tracing of these
+        datasets; and combining electron microscopy with current techniques for
+        interrogating the proteome and the genome.
+      </p>
+    </div>
+    <div>
+      <h1>Data Access</h1>
+      <p class="font-weight-normal">Search results are limited to members of the Neurocartography Portal Data Group.</p>
+        <a class="btn btn-primary" target="_blank" href="https://app.globus.org/groups/a36b3e83-4101-11e9-8864-0a6e84c4ea3a/about">
+          Request Access to Neurocartography Portal Data
+        </a>
+    </div>
+
+  <form id="search-form" class="my-4" name="search_form" action="{% url 'tp-project-search' 'kasthuri' 'neurocartography'  %}">
+    <input type="text" id="search-input" autocomplete="off"
+           data-provide="typeahead" name="q"
+           value="{{request.session.search.query}}" placeholder="Start your search here">
+    <button id="search-btn" type="submit" class="btn btn-default">
+      <i class="fas fa-search"></i>
+    </button>
+  </form>
+
+  </div>
+  <div class="col"></div>
+</div>
+
+{% endblock %}

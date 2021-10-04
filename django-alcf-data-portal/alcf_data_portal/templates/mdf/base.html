@@ -1,0 +1,135 @@
+{% load static %}
+{% load index_template %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {# CSS files #}
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+
+    {# Custom Fonts #}
+    <script type="text/javascript" src="{% static 'js/fontawesome-all.min.js' %}"></script>
+
+    {# Django CSRF Protection #}
+    {% csrf_token %}
+
+    {# Extras #}
+    {%block headextras%}{%endblock%}
+
+    <title>{%block title%}{%endblock%}</title>
+
+  </head>
+ <style>
+ @font-face {
+	font-family: 'museosans';
+	src: url("{% static '/fonts/../../static/fonts/221E91_4_0.woff' %}") format('woff');
+	font-weight: 100 ;
+}
+@font-face {
+	font-family: 'museosans';
+	src: url("{% static '/fonts/../../static/fonts/221E91_3_0.woff' %}") format('woff');
+	font-weight: 500 ;
+}
+@font-face {
+	font-family: 'museosans';
+	src: url("{% static '/fonts/../../static/fonts/221E91_1_0.woff' %}") format('woff');
+	font-weight: 300 ;
+}
+@font-face {
+	font-family: 'museosans';
+	src: url("{% static '/fonts/../../static/fonts/221E91_0_0.woff' %}") format('woff');
+	font-weight: 700 ;
+}
+
+body {
+    font-family: museosans,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 500;
+    padding-top: 0px;
+    font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, a {
+    color: #27518F;
+    font-weight: 500 !important;
+}
+
+a  {
+    text-decoration: none !important;
+}
+
+#search-form #search-input {
+    margin-right: auto;
+    border-radius: 0px;
+}
+ </style>
+
+
+  <body>
+
+    <nav class="navbar navbar-expand-lg">
+        <a href="https://www.materialsdatafacility.org">
+    <img src="{% static 'images/../../static/images/mdf.png' %}" height="30px">
+</a>
+<a href="http://chimad.northwestern.edu">
+    <img src="{% static 'images/../../static/images/chimad-dark.png' %}" height="28px" class="mr-4 ml-4 d-inline-block align-top float-right" alt="">
+</a>
+<a href="https://www.nist.gov">
+    <img src="{% static 'images/../../static/images/nist-dark.png' %}" height="25px" class="mr-4 d-inline-block align-top float-right" alt="">
+</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto"></ul>
+          <ul class="navbar-nav my-lg-0">
+
+            {%if backends.backends and request.user.is_authenticated %}
+            <li>
+              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+            <li>
+              <a class="nav-link" href="/">{{request.user.username }}</a>
+            </li>
+            {% elif 'globus' in backends.backends and not request.user.is_authenticated %}
+            <li>
+              <a class="nav-link" href="{% url 'social:begin' 'globus' %}?next={{ request.get_full_path|urlencode }}">Login</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+    </nav>
+
+    {% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        {% block breadcrumb_items %}
+        <li class="breadcrumb-item"><a class="h5" href="{% url 'index-selection' %}">{{globus_portal_framework.project_title}}</a></li>
+        {% endblock %}
+      </ol>
+    </nav>
+    {% endblock %}
+
+
+    {% if globus_portal_framework.index == 'mdf-test' %}
+    <div class="alert alert-info" role="alert">
+      You are viewing the MDF Test index, datasets here are not permanent and could
+      be removed at any time.
+    </div>
+    {% endif %}
+
+    <!-- Page body -->
+    {%block body%}
+    {%endblock%}
+
+    <!-- Page footer -->
+    {% index_template 'components/footer.html' as it_footer %}
+    {% include it_footer %}
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+  </body>
+</html>

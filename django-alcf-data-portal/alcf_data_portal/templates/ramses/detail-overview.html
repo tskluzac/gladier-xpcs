@@ -1,0 +1,104 @@
+{%extends "detail-base.html" %}
+{% load static %}
+
+
+{%block headextras%}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/search.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/detail-base.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/detail-overview.css' %}" />
+{%endblock%}
+
+{% block detail_title %}
+<h3>Ramses Performance Data</h3>
+<h2>{{title}}</h2>
+{% endblock %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a class="h5" href="{% url 'index-selection' %}">{{globus_portal_framework.project_title}}</a></li>
+<li class="breadcrumb-item"><a class="h5" href="{% url 'search' globus_portal_framework.index %}">{{globus_portal_framework.index_data.name}}</a></li>
+<li class="breadcrumb-item active"><a class="h5">{{remote_file_manifest.0.filename|default:'Result Details'}}</a></li>
+{% endblock %}
+
+{% block detail_body %}
+
+<div class="row">
+  <div class="col-md-12">
+
+    <div class="card mt-4">
+      <div class="card-header">{{title}}</div>
+      <div class="card-body">
+        <h3 class="text-center mb-5">General Info</h3>
+        <div class="column-content">
+
+
+          {% if perfdata.descriptions %}<h5>Description</h5>{%endif%}
+          {%for desc in perfdata.descriptions%}
+          <p>{{desc.value}}</p>
+          {%endfor%}
+          <h5>Dates</h5>
+          <p>
+              {% for date in perfdata.dates %}
+              {{date.date_type}} - {{date.value}} <br>
+              {% endfor %}
+          </p>
+
+          <h5>File System</h5>
+          <p>{{perfdata.filesystem.value}}</p>
+
+          <h5>Maximum File Size</h5>
+          <p>{{perfdata.maximum_file_size.value}}</p>
+
+          <h5>Organization</h5>
+          <p>{{perfdata.organization.value}}</p>
+
+          <h5>Contributors</h5>
+          <p>{%for contributor in perfdata.contributors%}
+              {{contributor.contributor_name}}{% if not forloop.last %};{%endif%}
+              {%endfor%}<br>
+          </p>
+
+          <h5>Resource Type</h5>
+          <p>{{perfdata.resource_type.value}}</p>
+
+          <h5>Formats</h5>
+          {% for format in perfdata.formats %}
+          <p>{{format.value}}</p>
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+  </div>
+
+  {% for metadata in field_metadata %}
+  <div class="col-md-12">
+    <div class="card mt-4">
+      <div class="card-header">{{title}}</div>
+      <div class="card-body">
+        <h3 class="text-center mb-5">Field Metadata</h3>
+        <h2>{{metadata.name}}</h2>
+        <table class="table table-responsive">
+          <thead>
+            <tr>
+                {%for col in metadata.field_titles %}
+                <th scope="col">{{col}}</th>
+                {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in metadata.field_values %}
+            <tr>
+              {% for item in row %}
+              <td>{{item}}</td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+
+{% endblock %}

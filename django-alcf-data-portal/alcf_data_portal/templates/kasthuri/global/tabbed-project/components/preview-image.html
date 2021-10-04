@@ -1,0 +1,33 @@
+{% if result.center_preview_png %}
+<div id="search-results-preview-image-loading-{{forloop.counter}}">
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+</div>
+<div id="search-results-preview-image-group-{{forloop.counter}}" style="display: none">
+  <img class="img-thumbnail preview-image"
+       src="#"
+       id="search-results-preview-image-{{forloop.counter}}"
+       width="150px" height="150px">
+  <div class="row">
+    <div class="col-12">
+      <i class="fas fa-adjust"></i>
+      <input type="range" min="70" max="120" value="{{kasthuri_contrast_default}}" step="1" class="slider"
+             id="search-results-preview-contrast-slider-{{forloop.counter}}"
+             oninput="onRangeInputEvent({{forloop.counter}});">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <i class="fas fa-sun"></i>
+      <input type="range" min="0" max="3200" value="{{kasthuri_brightness_default}}" step=".01" class="slider"
+             id="search-results-preview-brightness-slider-{{forloop.counter}}"
+             oninput="onRangeInputEvent({{forloop.counter}});">
+    </div>
+  </div>
+</div>
+{% else %}
+<p>No Preview Available</p>
+{% endif %}

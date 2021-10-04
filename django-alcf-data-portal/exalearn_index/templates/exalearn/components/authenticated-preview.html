@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card mt-3 text-center" style="">
+      <div id="preview-content-{{forloop.counter}}"></div>
+      {% if authenticated_preview.caption %}
+      <div class="card-body">
+        <p class="card-text">{{authenticated_preview_image.caption}}</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

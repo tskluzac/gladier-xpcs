@@ -1,0 +1,48 @@
+{% load static humanize %}
+<h3 class="h3">Results</h3>
+<h6 class="h6">{{search.total}} datasets found</h6>
+<div id="search-result" class="search-result">
+  {% for result in search.search_results %}
+  <div class="card my-3">
+    <div class="card-header">
+      <h3 class="search-title">
+        <a href="{% url 'tp-project-detail' globus_portal_framework.index project result.subject %}">
+          {{result.title|default:'Sample'}}
+        </a>
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-9">
+          <table class="table table-sm borderless">
+            <tbody>
+            {% for search_result in result.search_results %}
+            <tr>
+              <th>{{search_result.name}}</th>
+              {% if search_result.field in 'prj center_pos' %}
+              <td>{{search_result.value|intcomma}}</td>
+              {% elif search_result.type == 'date' %}
+              <td>{{search_result.value|date:"M Y" }}</td>
+              {% else %}
+              <td>{{search_result.value}}</td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+          <p class="card-text">{{result.truncated_description}}</p>
+          <p class="card-text">Sample:
+            <a class="btn btn-outline-info btn-sm" target="_blank"
+               href="{{result.globus_app_link}}">
+              {{result.project_metadata.beamline.sample.value}}
+            </a>
+          </p>
+        </div>
+        <div class="col-md-3">
+          {% include 'kasthuri/global/tabbed-project/components/preview-image.html' %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>

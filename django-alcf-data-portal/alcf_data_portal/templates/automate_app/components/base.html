@@ -1,0 +1,13 @@
+{% extends 'automate_app/components/../../../../automate_app/templates/automate_app/components/base.html' %}
+
+{% block headextras %}
+{% include 'global/components/../../global/components/google-analytics-tracking.html' %}
+{% endblock %}
+
+{% block navbar_brand %}
+  {% if portal_tagline %}
+  {{ globus_portal_framework.project_title|default:"Globus Portal Framework" }}
+  {% else %}
+  {{ globus_portal_framework.project_title|default:"Globus Portal Framework" }}
+  {% endif %}
+{% endblock %}

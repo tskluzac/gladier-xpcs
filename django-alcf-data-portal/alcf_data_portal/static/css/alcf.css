@@ -1,0 +1,73 @@
+
+
+@font-face {
+  font-family: 'Metropolis';
+  src: url('/static/fonts/Metropolis-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/static/fonts/Montserrat-Regular.ttf') format('truetype');
+}
+
+body {
+  font-family: 'Metropolis', 'Montserrat', sans-serif !important;
+}
+
+:root {
+  --dark-blue: #1c184e;
+  --blue: #3e89c6;
+  --light-blue: #c0e1de
+}
+
+ .dark-background, .header, .breadcrumb, .breadcrumb-item {
+  background-color: var(--dark-blue) !important;
+  color: var(--light-blue) !important;
+}
+
+.breadcrumb {
+  margin-bottom: 0px;
+  border-radius: 0;
+}
+
+.card-title {
+  color: var(--dark-blue)
+}
+
+.jumbotron-header, .jumbotron-header.p.lead {
+  border-radius: 0;
+  background-color: var(--dark-blue);
+  color: var(--light-blue);
+}
+
+.jumbotron-footer, .jumbotron-footer.p.lead, footer {
+  border-radius: 0;
+  background-color: black;
+  color: white;
+}
+
+h1, h2, h3, h4, h5, a, h1.display-4, li.breadcrumb-item {
+  color: var(--blue);
+}
+
+.navbar-brand, .navbar-dark {
+  color: var(--blue) !important;
+
+}
+
+.breadcrumb-item.active {
+  color: var(--light-blue);
+}
+
+.btn-primary {
+  background-color: var(--blue)
+}
+
+.footer {
+  background-color: black,
+  color: white
+}
+
+.pagination {
+  background-color: white;
+}

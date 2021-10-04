@@ -1,0 +1,36 @@
+{% extends 'global/tabbed-project/../../../alcf_data_portal/templates/global/tabbed-project/search.html' %}
+{% load static %}
+
+{% block headextras %}
+<script type="text/javascript" src="{% static 'js/../../../alcf_data_portal/static/js/general-preview.js' %}"></script>
+
+<script>
+
+  let rfmFiles = [
+  {% for result in search.search_results %}
+    {
+      'id': '{{forloop.counter}}',
+      'url': '{{result.listing_preview.url}}',
+      'mimetype': '{{result.listing_preview.mime_type|default:"image/png"}}',
+      'previewBytes': '{{result.listing_preview.field_metadata.previewbytes}}',
+    },
+  {% endfor %}
+  ]
+  function f(file, name) {
+      getAccessToken("{% url 'access_token' %}", "c7683485-3c3f-454a-94c0-74310c80b32a")
+      .then(token => loadContent(file, token, name))
+  }
+
+  for (var i = 0; i < rfmFiles.length; i++) {f(rfmFiles[i], 'preview-content-' + rfmFiles[i]['id'])}
+
+</script>
+{% endblock %}
+
+{% block search_form_url %}{{ request.get_full_path }}{% endblock %}
+
+{% block user_not_logged_in_section %}
+{% endblock %}
+
+{% block search_pagination_link %}
+<a class="page-link" onclick="console.log({{page.number}}); customSearch({{page.number}});">{{page.number}}</a>
+{% endblock %}

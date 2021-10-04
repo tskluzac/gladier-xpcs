@@ -1,0 +1,72 @@
+{% load index_template %}
+{% with concierge_bag.mdf_submission as mdf_submission %}
+<div class="col-md-12">
+    <h5 class="text-center h5">MDF</h5>
+</div>
+<div class="col-md-12">
+  {% if mdf_submission %}
+  <table class="table table-striped table-bordered">
+    <tbody>
+      <tr>
+        <td>Title</td>
+        <td>{{mdf_submission.status.title}}</td>
+      </tr>
+      <tr>
+        <td>Submitter</td>
+        <td>{{mdf_submission.status.submitter}}</td>
+      </tr>
+      <tr>
+        <td>Source ID</td>
+        <td>{{mdf_submission.status.source_id}}</td>
+      </tr>
+      <tr>
+        <td>Test mdf_submission</td>
+        <td>{{mdf_submission.status.test}}</td>
+      </tr>
+      <tr>
+        <td>Status</td>
+        <td>{% if mdf_submission.status.active %}Running{% else %}Complete{% endif %}</td>
+      </tr>
+      <tr>
+        <td>Link</td>
+        <td>
+          {% if mdf_submission.status.status_list.5.signal == 'success' %}
+            {% if mdf_submission.status.test %}
+            <a href="{% url 'detail' 'mdf-test' mdf_submission.source_id %}" target="_blank">MDF Record</a>
+            {% else %}
+            <a href="{% url 'detail' 'mdf' mdf_submission.source_id %}" target="_blank">MDF Record</a>
+            {% endif %}
+          {% else %}
+          <p>Link Not Ready...</p>
+          {% endif %}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+<div class="col-md-12">
+  {% if mdf_submission and mdf_submission.source_id %}
+  <table class="table table-striped table-bordered">
+    <tbody>
+      {% for status in mdf_submission.status.status_list %}
+      <tr>
+        <td>{{status.text}}</td>
+        <td>{{status.signal}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    {% if not concierge_bag.search_collection %}
+    <p>This bag was created before the publication feature was an option, please
+    re-create this bag.</p>
+    {% else %}
+    {% block mdf_submission_form %}
+    {% index_template 'concierge-app/components/mdf-submission-form.html' as mdf_submission_form %}
+    {% include mdf_submission_form %}
+    {% endblock %}
+    {% endif %}
+  {% endif %}
+</div>
+{% endwith %}
