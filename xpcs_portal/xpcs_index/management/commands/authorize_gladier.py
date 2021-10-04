@@ -9,8 +9,6 @@ from django.contrib.auth.models import User
 from django.utils.timezone import now
 
 
-
-
 class Command(BaseCommand):
     help = 'Registers a FuncX Function for an Automate Flow'
 

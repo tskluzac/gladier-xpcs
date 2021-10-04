@@ -23,8 +23,9 @@ except ImportError:
     extra_scopes = []
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+# BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = "/src/django-alcf-data-portal/"  # TODO: TYLER ADDED.
+DB_PATH = "/src/xpcs_portal/db.sqlite3"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -78,7 +79,11 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'alcf_data_portal' / 'templates',
+                BASE_DIR + 'alcf_data_portal/templates',
+                # '/src' # Tyler added
+                # '/src/xpcs_portal/xpcs_index /xpcs/templates' # Tyler added
+                # '/src/xpcs_portal/xpcs_index/templates'  Tyler's attempt #1
+                # '/src/xpcs_portal/xpcs_index/templates/' Tyler's attempt #2
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -116,7 +121,7 @@ SOCIAL_AUTH_GLOBUS_SCOPE = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME':  DB_PATH # f"{BASE_DIR}db.sqlite3", # TODO: TYLER EDITED.
     }
 }
 

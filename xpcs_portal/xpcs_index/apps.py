@@ -68,7 +68,7 @@ SEARCH_INDEXES = {
             },
             {
                 "name": "APS Cycle",
-                "field_name": "project_metadata.cycle",
+                "field_name": "project_metadata.aps_cycle_v2",
             },
             {
                 "name": "Dates",
