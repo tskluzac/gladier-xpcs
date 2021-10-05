@@ -24,15 +24,16 @@ except ImportError:
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+# BASE_DIR = "django-alcf-data-portal/alcf_data_portal"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+WSGI_APPLICATION = 'xpcs_portal.testing.wsgi.application'
 
 # Application definition
 
@@ -82,6 +83,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR / 'testing' / 'templates',
+            f'{BASE_DIR}/xpcs_index/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -123,7 +125,7 @@ ALLOWED_FRONTEND_TOKENS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': f'{BASE_DIR}/db.sqlite3',
     }
 }
 

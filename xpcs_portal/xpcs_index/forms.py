@@ -42,6 +42,10 @@ class ReprocessDatasetsCheckoutForm(SubjectSelectManifestCheckoutForm):
             xpcs_lambda = hdfs == 1 and imm == 1
             if all_hdf or rigaku or xpcs_lambda:
                 valid_gmetas.append(result)
+        import logging
+        logging.error("*****************************FUCK6")
+
         log.debug(f'Loading form with {len(valid_gmetas)}/{len(sc.search_data["gmeta"])} valid results')
         sc.search_data['gmeta'] = valid_gmetas
+        logging.error(f"SC: {sc}")
         return sc

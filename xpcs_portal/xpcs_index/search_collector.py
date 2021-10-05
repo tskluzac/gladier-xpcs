@@ -29,4 +29,6 @@ class XPCSReprocessingSearchCollector(SearchCollector):
             # Use the parent directory as the key to bind them together
             path = pathlib.Path(urllib.parse.urlparse(m['url']).path)
             datasets[path.parent.name].append(path)
+        logging.error("*****************************HELLO7")
+
         return list(datasets.values())

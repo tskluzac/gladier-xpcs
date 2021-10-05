@@ -1,6 +1,7 @@
 import os
 from urllib.parse import urlsplit, urlencode, urlunsplit
 from alcf_data_portal.templatetags.xpcs_filters import format_aps_cycle_v2
+import logging
 
 LISTING_PREVIEW = 'scattering_pattern_log.png'
 
@@ -32,15 +33,21 @@ def search_results(result):
         get_fields(dc_fields, result[0]['dc']) +
         get_fields(rfm_size, get_file(result))
         )
+
+    logging.error("*[fields.py]: SEARCH RESULTS")
     return populated_fields
 
 
 def cherry_picked_detail(result):
+    logging.error("[fields.py] CHERRY PICKING")
     aps_cycle = get_fields([{'field': 'aps_cycle_v2', 'name': 'APS Cycle'}],
                            result[0]['project_metadata'])
     if aps_cycle:
         aps_cycle[0]['value'] = format_aps_cycle_v2(aps_cycle[0]['value'])
     all_groups = detail_field_groups(result)
+    # TODO: Tyler: this prints cherry picked items (lotsa data)
+    #logging.error(f"[fields.py] ALL GROUPS: {all_groups}")
+
     for group in all_groups:
         if group['name'] == 'Instrument Acquisition Measurements':
             if len(aps_cycle) > 0:

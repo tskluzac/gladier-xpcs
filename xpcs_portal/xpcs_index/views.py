@@ -22,20 +22,25 @@ class XPCSSearchView(LoginRequiredMixin, SearchView):
     """Custom XPCS Search view automatically filters on the xpcs-8id 'project'. This is old,
     based on the pilot project feature and will be going away eventually."""
 
+    #TODO: TYLER
     @property
     def filters(self):
         project_filters = [{
             'type': 'match_all',
             'field_name': 'project_metadata.project-slug',
-            'values': ['xpcs-8id']
+            'values': ['xtract-xpcs-1']
         }]
-        return super().filters + project_filters
+        import logging
+        logging.error("[views.py] XPCSSEARCHVIEW")
+        return super().filters # + project_filters #TODO: Tyler commented this out
 
 
 class XPCSDetailView(DetailView):
     """The custom XPCS detail view adds support for toggling images on and off"""
 
     def get_context_data(self, *args, **kwargs):
+        import logging
+        logging.error("[views.py] in views")
         context = super().get_context_data(*args, **kwargs)
         preview_list = (
             'all_preview',
