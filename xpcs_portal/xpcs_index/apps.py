@@ -18,7 +18,8 @@ REPROCESSING_FLOW_DEPLOYMENT = NickPortalDeployment()
 
 SEARCH_INDEXES = {
     'xpcs': {
-        'uuid': '6871e83e-866b-41bc-8430-e3cf83b43bdc',
+        # 'uuid': '6871e83e-866b-41bc-8430-e3cf83b43bdc',
+        'uuid': '344688c6-cff6-49c7-9bc5-e2fa3c5fedd2',
         'name': 'APS XPCS',
         # 'tagline': 'APS Beamline Data',
         'group': '',

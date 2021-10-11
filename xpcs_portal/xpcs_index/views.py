@@ -27,7 +27,7 @@ class XPCSSearchView(LoginRequiredMixin, SearchView):
         project_filters = [{
             'type': 'match_all',
             'field_name': 'project_metadata.project-slug',
-            'values': ['xpcs-8id']
+            'values': ['xtract-xpcs-1']
         }]
         return super().filters + project_filters
 
